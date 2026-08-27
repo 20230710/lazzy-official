@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lazzy｜Vsingerユニット公式サイト</title>
+<meta name="description" content="リアル幼馴染の音琴ういと子守うたりによるVsingerユニット「Lazzy」の公式サイトです。プロフィール、配信スケジュール、配信ガイドラインなどを掲載しています。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= ヘッダー／ナビゲーション ================= -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="#top" class="logo-lockup">
+      <!-- ロゴ画像がある場合は images/logo.svg 等に差し替えて <img> に変更してもOK -->
+      <span class="logo">Lazzy</span>
+      <span class="logo-sub">Lazzy Official Website</span>
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <a href="#top">Top</a>
+      <a href="#profile">Profile</a>
+      <a href="#movie">Movie</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#guideline">Stream Guideline</a>
+      <a href="#works">Works</a>
+    </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="menuOverlay">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ================= フルスクリーンメニュー ================= -->
+<div class="menu-overlay" id="menuOverlay">
+  <button class="menu-overlay-close" id="menuOverlayClose" aria-label="メニューを閉じる">&times;</button>
+  <nav class="menu-overlay-nav">
+    <a href="#top">Top</a>
+    <a href="#profile">Profile</a>
+    <a href="#movie">Movie</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#guideline">Stream Guideline</a>
+    <a href="#works">Works</a>
+  </nav>
+</div>
+
+<!-- ================= ヒーロー（トップ） ================= -->
+<section class="hero" id="top">
+  <div class="hero-stars" aria-hidden="true"></div>
+  <div class="hero-orbit" aria-hidden="true"></div>
+
+  <div class="hero-art">
+    <!-- 差し替え：お二人のイラストを images/hero.png（または.svg）として保存し、下のsrcを書き換えてください -->
+    <img src="images/hero-placeholder.svg" alt="Lazzy お二人のイラスト">
+  </div>
+
+  <div class="hero-inner">
+    <p class="hero-tagline">ここは、いつでも帰ってこられる”もうひとつの日常”</p>
+  </div>
+
+  <div class="hero-social">
+    <a href="https://www.youtube.com/@youraccount" target="_blank" rel="noopener" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M23.5 6.2s-.23-1.64-.94-2.36c-.9-.94-1.9-.95-2.36-1C16.9 2.5 12 2.5 12 2.5h-.01s-4.9 0-8.2.34c-.46.05-1.46.06-2.36 1C.72 4.56.5 6.2.5 6.2S.25 8.13.25 10.06v1.87C.25 13.87.5 15.8.5 15.8s.23 1.64.93 2.36c.9.94 2.08.91 2.6 1.01 1.9.18 8 .24 8 .24s4.9-.01 8.2-.35c.46-.05 1.46-.06 2.36-1 .7-.72.94-2.36.94-2.36s.25-1.93.25-3.87v-1.87c0-1.93-.25-3.86-.25-3.86zM9.7 14.9V7.9l6.5 3.5-6.5 3.5z"/></svg>
+    </a>
+    <a href="https://x.com/youraccount" target="_blank" rel="noopener" aria-label="X (Twitter)">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.4 22H1.3l8.2-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 3.9H5.6L17.7 20z"/></svg>
+    </a>
+    <a href="https://your-shop-url.example.com" target="_blank" rel="noopener" aria-label="グッズショップ">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7 4h10l1.5 4H5.5L7 4zm-2 6h14l-1.2 9.1c-.1.9-.9 1.6-1.8 1.6H8c-.9 0-1.7-.7-1.8-1.6L5 10zm5 3v5m4-5v5" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ================= マーキー（ロゴが流れる帯） ================= -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ </span>
+    <span>Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ </span>
+  </div>
+</div>
+
+<!-- ================= プロフィール ================= -->
+<section class="section section-navy" id="profile">
+  <div class="section-inner center">
+    <h2 class="section-title starred">PROFILE</h2>
+    <p class="section-lead">リアル幼馴染の音琴ういと子守うたりのVsingerユニット「Lazzy」</p>
+    <p class="section-sublead">2023年7月10日にデビュー。</p>
+  </div>
+
+  <!-- ================= メンバー（お二人） ================= -->
+  <div class="section-inner" id="members">
+    <div class="member-row">
+      <div class="member-photo">
+        <img src="images/member-1.svg" alt="音琴ういのアイコン">
+      </div>
+      <div class="member-info">
+        <h3 class="member-name">音琴うい</h3>
+        <p class="member-desc">
+          寝ること大好きなぐ〜たら女の子<br>
+          将来はお布団と結婚するらしい…<br>
+          猫派だが猫アレルギーと勘違いして犬を飼ってしまった
+        </p>
+        <div class="member-actions">
+          <div class="member-sns">
+            <a href="https://x.com/member1" target="_blank" rel="noopener" aria-label="X (Twitter)">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.4 22H1.3l8.2-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 3.9H5.6L17.7 20z"/></svg>
+            </a>
+            <a href="https://your-music-link.example.com" target="_blank" rel="noopener" aria-label="音楽リンク">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M9 18V5l11-2v13M9 18a3 3 0 11-3-3 3 3 0 013 3zm11-2a3 3 0 11-3-3 3 3 0 013 3z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+          <!-- MOREボタン：外部の個別サイトURLに差し替えてください -->
+          <a class="btn-more" href="https://member1-official-site.example.com" target="_blank" rel="noopener">MORE</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="member-row member-row-reverse">
+      <div class="member-photo">
+        <img src="images/member-2.svg" alt="子守うたりのアイコン">
+      </div>
+      <div class="member-info">
+        <h3 class="member-name">子守うたり</h3>
+        <p class="member-desc">
+          前世はナマケモノ…?<br>
+          歌って絵を描くマルチクリエイター<br>
+          昔の名残で家から出ないと体から葉っぱが生えてくる
+        </p>
+        <div class="member-actions">
+          <div class="member-sns">
+            <a href="https://x.com/member2" target="_blank" rel="noopener" aria-label="X (Twitter)">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.4 22H1.3l8.2-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 3.9H5.6L17.7 20z"/></svg>
+            </a>
+            <a href="https://your-music-link.example.com" target="_blank" rel="noopener" aria-label="音楽リンク">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M9 18V5l11-2v13M9 18a3 3 0 11-3-3 3 3 0 013 3zm11-2a3 3 0 11-3-3 3 3 0 013 3z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+          <!-- MOREボタン：外部の個別サイトURLに差し替えてください -->
+          <a class="btn-more" href="https://member2-official-site.example.com" target="_blank" rel="noopener">MORE</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 動画（YouTube埋め込み） ================= -->
+  <div class="section-inner" id="movie">
+    <div class="movie-panel">
+      <h2 class="section-title starred center">MOVIE</h2>
+
+      <div class="movie-grid">
+        <!--
+          動画の差し替え方法：
+          1. YouTubeで動画を開き「共有」→「埋め込む」をクリック
+          2. 表示されたコードの src="https://www.youtube.com/embed/xxxxxxxx" の
+             "xxxxxxxx" 部分だけを、下のsrcの動画IDと差し替えてください
+        -->
+        <figure class="movie-item">
+          <div class="movie-frame">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="動画タイトル1" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <figcaption>《動画タイトル1》</figcaption>
+        </figure>
+        <figure class="movie-item">
+          <div class="movie-frame">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="動画タイトル2" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <figcaption>《動画タイトル2》</figcaption>
+        </figure>
+        <figure class="movie-item">
+          <div class="movie-frame">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="動画タイトル3" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <figcaption>《動画タイトル3》</figcaption>
+        </figure>
+        <figure class="movie-item">
+          <div class="movie-frame">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="動画タイトル4" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <figcaption>《動画タイトル4》</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= スケジュール ================= -->
+  <div class="section-inner center" id="schedule">
+    <h2 class="section-title starred">SCHEDULE</h2>
+    <div class="schedule-panel">
+      <!--
+        差し替え方法：
+        ・配信スケジュール画像がある場合は images/schedule.png 等に差し替えてsrcを書き換え
+        ・Googleカレンダーを埋め込みたい場合は、下のimgタグを削除し、
+          Googleカレンダーの「設定」→「埋め込みコード」で発行される<iframe>タグに差し替えてください
+      -->
+      <img src="images/schedule-placeholder.svg" alt="配信スケジュール">
+    </div>
+  </div>
+</section>
+
+<!-- ================= 配信ガイドライン ================= -->
+<section class="section section-ivory" id="guideline">
+  <div class="section-inner center">
+    <h2 class="section-title starred dark">STREAM GUIDELINE</h2>
+  </div>
+  <div class="section-inner guideline-inner">
+    <ol class="guideline-list">
+      <li><span class="num">1</span>お互いに尊重し合うこと</li>
+      <li><span class="num">2</span>求めていない時の指示行為は控えること</li>
+      <li><span class="num">3</span>他の活動者さんの話を必要以上に持ち出さないこと</li>
+      <li>
+        <span class="num">4</span>以下の行為はおやめください
+        <ul class="guideline-sub">
+          <li>暴言</li>
+          <li>相方を下げる言葉</li>
+          <li>過度な自分語り</li>
+          <li>個人特定に繋がる質問</li>
+          <li>特定できてしまうほどの個人情報の開示</li>
+          <li>セクハラコメント（お名前も含む）</li>
+          <li>同じコメント・リクエストを何度も繰り返すこと（弾幕以外）</li>
+          <li>過度なリスナー同士の会話</li>
+        </ul>
+        <p class="guideline-note">※「過度」の目安は3回までとしています</p>
+      </li>
+      <li><span class="num">5</span>荒らしが来ても無視すること</li>
+      <li><span class="num">6</span>全てのコメントは拾えないことを承知の上、コメントをすること</li>
+      <li><span class="num">7</span>他枠にお邪魔する際は、他枠のルールに従うこと</li>
+      <li><span class="num">8</span>日本語＆簡単な英語以外のコメントは無視することがあること</li>
+    </ol>
+
+    <div class="center">
+      <a href="guideline.html#collab" class="btn-more btn-more-lg">その他のガイドラインについて</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 活動実績 ================= -->
+<section class="section section-navy" id="works">
+  <div class="section-inner center">
+    <h2 class="section-title starred">WORKS</h2>
+  </div>
+  <div class="section-inner works-inner">
+    <ul class="works-list">
+      <!-- 実績を追加する場合は <li class="works-group">〜</li> をコピーして追加してください -->
+      <li class="works-group">
+        <time>2025.02</time>
+        <ul>
+          <li>AttendMe様「推しカード」販売</li>
+        </ul>
+      </li>
+      <li class="works-group">
+        <time>2025.05</time>
+        <ul>
+          <li>Vup様 オンラインくじ販売</li>
+        </ul>
+      </li>
+      <li class="works-group">
+        <time>2026.01</time>
+        <ul>
+          <li>V-Bar「Real」様リアルイベント開催</li>
+          <li>AttendMe様『推しの護符』販売</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= マーキー（下部） ================= -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ </span>
+    <span>Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ Lazzy ✦ </span>
+  </div>
+</div>
+
+<!-- ================= フッター ================= -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="#top" class="logo footer-logo">Lazzy</a>
+
+    <nav class="footer-nav">
+      <a href="#profile">Profile</a>
+      <a href="#movie">Movie</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#guideline">Stream Guideline</a>
+      <a href="#works">Works</a>
+      <a href="mailto:your-email@example.com">Contact</a>
+    </nav>
+
+    <div class="footer-sub-links">
+      <a href="guideline.html#collab">コラボガイドライン &rsaquo;</a>
+      <a href="guideline.html#fanart">二次創作ガイドライン &rsaquo;</a>
+      <a href="guideline.html#fa-request">FAガイドライン &rsaquo;</a>
+      <a href="guideline.html#kirinuki">切り抜きガイドライン &rsaquo;</a>
+    </div>
+
+    <p class="footer-copy">Lazzy Official Website</p>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
