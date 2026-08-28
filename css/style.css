@@ -59,7 +59,9 @@ body.menu-open {
   overflow: hidden;
 }
 body.menu-open .nav-toggle {
-  display: flex;
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
 }
 
 img { max-width: 100%; display: block; }
@@ -213,6 +215,9 @@ button:focus-visible {
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .3s ease, transform .3s ease;
 }
 .main-nav a {
   font-family: var(--font-heading);
@@ -233,7 +238,7 @@ button:focus-visible {
 .main-nav a:hover::after { width: 100%; }
 
 .nav-toggle {
-  display: none;
+  display: flex;
   position: fixed;
   top: 16px;
   right: 40px;
@@ -248,7 +253,10 @@ button:focus-visible {
   border-radius: 8px;
   cursor: pointer;
   padding: 0;
-  transition: background-color .3s ease;
+  opacity: 0;
+  transform: scale(.9);
+  pointer-events: none;
+  transition: background-color .3s ease, opacity .3s ease, transform .3s ease;
   flex: 0 0 auto;
 }
 .nav-toggle:hover { background: var(--color-gold-dark); }
@@ -274,11 +282,15 @@ button:focus-visible {
 /* スクロール後（TOP）／常時（下層ページ）はナビをたたんでハンバーガーのみ表示 */
 .site-header.is-compact .main-nav,
 .site-header.header-compact-always .main-nav {
-  display: none;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
 }
 .site-header.is-compact ~ .nav-toggle,
 .site-header.header-compact-always ~ .nav-toggle {
-  display: flex;
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
 }
 
 /* ---------- フルスクリーンメニュー ---------- */
@@ -989,8 +1001,8 @@ button:focus-visible {
 
 @media (max-width: 700px) {
   /* スマホ幅では常にハンバーガー表示（フルスクリーンメニューを使用） */
-  .main-nav { display: none; }
-  .nav-toggle { display: flex; }
+  .main-nav { opacity: 0; pointer-events: none; }
+  .nav-toggle { opacity: 1; transform: scale(1); pointer-events: auto; }
 
   .hero-social { left: 16px; bottom: 90px; }
 }
