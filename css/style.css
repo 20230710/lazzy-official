@@ -849,44 +849,93 @@ button:focus-visible {
 
 /* ---------- フッター ---------- */
 .site-footer {
-  background: var(--color-navy-deep);
-  color: var(--color-text-muted);
-  padding: 48px 24px 32px;
+  background: var(--color-hero-navy);
+  color: var(--color-text-light);
+  height: 240px;
+  display: flex;
+  align-items: center;
 }
 .footer-inner {
+  width: 100%;
+  height: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  text-align: center;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
 }
 .footer-logo {
-  margin-bottom: 20px;
   display: inline-flex;
-  justify-content: center;
 }
 .footer-logo .logo-img {
-  height: 40px;
+  height: 73px;
+}
+.footer-social {
+  display: flex;
+  gap: 12px;
+}
+.footer-social a {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-light);
+  transition: background .2s ease, border-color .2s ease;
+}
+.footer-social a:hover {
+  background: rgba(var(--color-ivory-rgb), 0.1);
+  border-color: var(--color-accent);
+}
+.footer-right {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.footer-right-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 22px;
-  margin-bottom: 16px;
+  justify-content: flex-end;
+  gap: 28px;
   font-family: var(--font-heading);
-  font-size: 0.88rem;
+  font-size: 20px;
+}
+.footer-nav a,
+.footer-sub-links a {
+  transition: color .2s ease;
+}
+.footer-nav a:hover,
+.footer-sub-links a:hover {
+  color: var(--color-accent);
 }
 .footer-sub-links {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 18px;
-  font-size: 0.78rem;
-  margin-bottom: 20px;
+  justify-content: flex-end;
+  gap: 20px;
+  font-size: 14px;
+  margin-top: 12px;
   color: var(--color-text-muted);
   opacity: 0.8;
 }
 .footer-copy {
-  font-size: 0.75rem;
+  font-size: 12px;
   margin: 0;
   opacity: 0.6;
 }
