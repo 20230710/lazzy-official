@@ -27,6 +27,7 @@
 
   --color-hero-navy: #2d3a5a;
   --color-hero-gold-rgb: 213, 194, 138;
+  --color-marquee-navy: #1d253a;
 
   --font-logo: 'Comfortaa', 'Zen Kaku Gothic New', sans-serif;
   --font-heading: 'Comfortaa', 'Zen Kaku Gothic New', sans-serif;
@@ -486,7 +487,7 @@ button:focus-visible {
 
 /* ---------- マーキー ---------- */
 .marquee {
-  background: var(--color-navy-deep);
+  background: var(--color-marquee-navy);
   overflow: hidden;
   white-space: nowrap;
   padding: 16px 0;
