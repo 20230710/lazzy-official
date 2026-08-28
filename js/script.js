@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var header = document.getElementById('siteHeader');
   var navToggle = document.getElementById('navToggle');
   var menuOverlay = document.getElementById('menuOverlay');
-  var menuOverlayClose = document.getElementById('menuOverlayClose');
 
   // ---- スクロールしたらヘッダーをコンパクト表示（TOPページのみ） ----
   // 下層ページ（guideline.html等）は header-compact-always クラスが
@@ -26,19 +25,28 @@ document.addEventListener('DOMContentLoaded', function () {
     onScroll();
   }
 
-  // ---- フルスクリーンメニューの開閉 ----
+  // ---- フルスクリーンメニューの開閉（ハンバーガー1つで開閉を兼用） ----
   if (navToggle && menuOverlay) {
     var openMenu = function () {
       menuOverlay.classList.add('is-open');
+      navToggle.classList.add('is-active');
       navToggle.setAttribute('aria-expanded', 'true');
+      navToggle.setAttribute('aria-label', 'メニューを閉じる');
     };
     var closeMenu = function () {
       menuOverlay.classList.remove('is-open');
+      navToggle.classList.remove('is-active');
       navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', 'メニューを開く');
     };
 
-    navToggle.addEventListener('click', openMenu);
-    if (menuOverlayClose) menuOverlayClose.addEventListener('click', closeMenu);
+    navToggle.addEventListener('click', function () {
+      if (menuOverlay.classList.contains('is-open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
 
     menuOverlay.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', closeMenu);
