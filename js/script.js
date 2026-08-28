@@ -30,12 +30,14 @@ document.addEventListener('DOMContentLoaded', function () {
     var openMenu = function () {
       menuOverlay.classList.add('is-open');
       navToggle.classList.add('is-active');
+      document.body.classList.add('menu-open');
       navToggle.setAttribute('aria-expanded', 'true');
       navToggle.setAttribute('aria-label', 'メニューを閉じる');
     };
     var closeMenu = function () {
       menuOverlay.classList.remove('is-open');
       navToggle.classList.remove('is-active');
+      document.body.classList.remove('menu-open');
       navToggle.setAttribute('aria-expanded', 'false');
       navToggle.setAttribute('aria-label', 'メニューを開く');
     };
