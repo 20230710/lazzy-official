@@ -675,13 +675,20 @@ button:focus-visible {
 /* ---------- スケジュール ---------- */
 #schedule { margin-top: 32px; }
 .schedule-panel {
-  background: var(--color-ivory);
   border-radius: 8px;
   overflow: hidden;
-  max-width: 720px;
+  max-width: 800px;
   margin: 24px auto 0;
+  display: flex;
+  justify-content: center;
 }
-.schedule-panel img { width: 100%; }
+.schedule-embed {
+  width: 800px;
+  height: auto;
+  max-width: 100%;
+  aspect-ratio: 800 / 450;
+  border: 0;
+}
 
 /* ---------- 配信ガイドライン ---------- */
 .guideline-inner { max-width: 760px; }
