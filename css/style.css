@@ -489,21 +489,20 @@ button:focus-visible {
   background: var(--color-navy-deep);
   overflow: hidden;
   white-space: nowrap;
-  padding: 14px 0;
-  border-top: 1px solid var(--color-border-light);
-  border-bottom: 1px solid var(--color-border-light);
+  padding: 16px 0;
 }
 .marquee-track {
   display: inline-flex;
-  animation: scroll-left 26s linear infinite;
+  animation: scroll-left 80s linear infinite;
 }
 .marquee-track span {
+  display: inline-block;
   font-family: var(--font-logo);
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 400;
+  font-size: 16px;
   letter-spacing: 0.05em;
   color: var(--color-text-muted);
-  padding-right: 8px;
+  margin-right: 24px;
 }
 @keyframes scroll-left {
   from { transform: translateX(0); }
