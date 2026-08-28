@@ -20,9 +20,9 @@
   --color-border-light: rgba(247, 243, 234, 0.18);
   --color-border-dark: #ddd6c2;
 
-  --font-logo: 'Baloo 2', sans-serif;
-  --font-heading: 'Quicksand', sans-serif;
-  --font-body: 'Noto Sans JP', sans-serif;
+  --font-logo: 'Comfortaa', 'Zen Kaku Gothic New', sans-serif;
+  --font-heading: 'Comfortaa', 'Zen Kaku Gothic New', sans-serif;
+  --font-body: 'Comfortaa', 'Zen Kaku Gothic New', sans-serif;
 
   --max-width: 1120px;
 }
@@ -126,19 +126,18 @@ button:focus-visible {
   justify-content: space-between;
   height: 72px;
 }
-.logo {
-  font-family: var(--font-logo);
-  font-weight: 700;
-  font-size: 1.3rem;
-  color: var(--color-text-light);
-  letter-spacing: 0.02em;
-}
 .logo-lockup {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   line-height: 1.1;
 }
-.logo-lockup .logo { font-size: 1.4rem; }
+.logo-img {
+  display: block;
+  height: 36px;
+  width: auto;
+  mix-blend-mode: screen;
+}
 .logo-sub {
   font-family: var(--font-heading);
   font-size: 0.62rem;
@@ -146,8 +145,6 @@ button:focus-visible {
   color: var(--color-text-muted);
   margin-top: 2px;
 }
-.page-inner .logo-sub,
-.section-navy .logo-sub { color: var(--color-text-muted); }
 .main-nav {
   display: flex;
   gap: 28px;
@@ -642,9 +639,12 @@ button:focus-visible {
   text-align: center;
 }
 .footer-logo {
-  font-size: 1.15rem;
   margin-bottom: 20px;
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+}
+.footer-logo .logo-img {
+  height: 40px;
 }
 .footer-nav {
   display: flex;
