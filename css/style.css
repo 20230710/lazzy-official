@@ -26,6 +26,7 @@
   --color-white-rgb: 255, 255, 255;
 
   --color-hero-navy: #2d3a5a;
+  --color-hero-gold: #d5c28a;
   --color-hero-gold-rgb: 213, 194, 138;
   --color-marquee-navy: #1d253a;
 
@@ -563,6 +564,7 @@ button:focus-visible {
 
 .member-name {
   font-family: var(--font-heading);
+  font-weight: 400;
   font-size: 32px;
   letter-spacing: 0.04em;
   margin-bottom: 12px;
@@ -575,9 +577,9 @@ button:focus-visible {
 .member-actions {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 18px;
 }
-.member-row-reverse .member-actions { justify-content: flex-end; }
 
 .member-sns {
   display: flex;
@@ -625,13 +627,13 @@ button:focus-visible {
   width: 86px;
   height: 36px;
   padding: 8px 16px;
-  background: transparent;
-  color: var(--color-text-light);
+  background: var(--color-hero-gold);
+  color: var(--color-marquee-navy);
   border: 1px solid currentColor;
   border-radius: 0 8px 0 8px;
   font-size: 16px;
 }
-.member-actions .btn-more:hover { background: rgba(var(--color-ivory-rgb), 0.1); }
+.member-actions .btn-more:hover { background: var(--color-gold-dark); }
 
 /* ---------- 動画パネル ---------- */
 #movie { margin-top: 80px; }
