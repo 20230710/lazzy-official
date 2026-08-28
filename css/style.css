@@ -519,6 +519,7 @@ button:focus-visible {
 }
 .section-navy .section-title { color: var(--color-text-light); }
 #profile { background: var(--color-hero-navy); padding: 40px 0; }
+#guideline { padding: 40px 0; }
 .section-ivory {
   background: var(--color-ivory);
   color: var(--color-text-dark);
@@ -694,7 +695,7 @@ button:focus-visible {
 .guideline-inner { max-width: 760px; }
 .guideline-list {
   list-style: none;
-  margin: 40px 0 0;
+  margin: 24px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
