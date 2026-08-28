@@ -519,6 +519,7 @@ button:focus-visible {
 }
 .section-navy .section-title { color: var(--color-text-light); }
 #profile { background: var(--color-hero-navy); padding: 40px 0; }
+#works { padding: 40px 0; background: var(--color-hero-navy); }
 #guideline { padding: 40px 0; }
 .section-ivory {
   background: var(--color-ivory);
@@ -759,7 +760,7 @@ button:focus-visible {
 .works-inner { max-width: 640px; }
 .works-list {
   list-style: none;
-  margin: 32px 0 0;
+  margin: 24px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -768,7 +769,8 @@ button:focus-visible {
 .works-group time {
   display: block;
   font-family: var(--font-heading);
-  color: var(--color-accent);
+  color: #d3d3d3;
+  font-size: 12px;
   letter-spacing: 0.05em;
   margin-bottom: 6px;
 }
@@ -776,16 +778,12 @@ button:focus-visible {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 .works-group ul li {
-  padding-left: 1.2em;
-  position: relative;
-  font-size: 0.95rem;
-}
-.works-group ul li::before {
-  content: '・';
-  position: absolute;
-  left: 0;
+  font-size: 16px;
 }
 
 /* ---------- 下層ページ（GUIDELINE） ---------- */
