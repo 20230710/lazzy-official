@@ -94,8 +94,8 @@ button:focus-visible {
 }
 .section-title {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: clamp(1.7rem, 4vw, 2.3rem);
+  font-weight: 400;
+  font-size: 40px;
   letter-spacing: 0.08em;
   margin-bottom: 18px;
 }
@@ -115,7 +115,7 @@ button:focus-visible {
 .section-title.starred::after {
   content: '✦ ✦';
   display: inline-block;
-  color: var(--color-gold);
+  color: currentColor;
   font-size: 0.55em;
   letter-spacing: 0.3em;
   vertical-align: middle;
