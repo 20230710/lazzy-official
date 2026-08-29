@@ -179,10 +179,6 @@ button:focus-visible {
   background: transparent;
   transition: background .3s ease, backdrop-filter .3s ease;
 }
-.site-header.header-compact-always {
-  background: rgba(var(--color-navy-deep-rgb), 0.55);
-  backdrop-filter: blur(8px);
-}
 .header-inner {
   display: flex;
   align-items: flex-start;
@@ -573,6 +569,7 @@ button:focus-visible {
 #profile { background: var(--color-hero-navy); padding: 40px 0; }
 #works { padding: 40px 0; background: var(--color-hero-navy); }
 #guideline { padding: 40px 0; }
+.guideline-page { background: var(--color-hero-navy); }
 .section-ivory {
   background: var(--color-ivory);
   color: var(--color-text-dark);
