@@ -1004,7 +1004,7 @@ button:focus-visible {
   .main-nav { opacity: 0; pointer-events: none; }
   .nav-toggle { opacity: 1; transform: scale(1); pointer-events: auto; }
 
-  .hero-social { left: 16px; bottom: 90px; }
+  .hero-social { left: 16px; bottom: 16px; }
 
   .hero-inner { display: none; }
 
