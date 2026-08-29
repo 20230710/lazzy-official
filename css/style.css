@@ -146,6 +146,7 @@ button:focus-visible {
   font-size: 24px;
   white-space: nowrap;
 }
+.sp-break { display: none; }
 .section-sublead {
   color: var(--color-text-muted);
   font-size: 16px;
@@ -985,6 +986,7 @@ button:focus-visible {
   color: var(--color-text-muted);
   opacity: 0.8;
 }
+.footer-break { display: none; }
 .footer-copy {
   font-size: 12px;
   margin: 0;
@@ -1007,6 +1009,27 @@ button:focus-visible {
   .hero-social { left: 16px; bottom: 16px; }
 
   .hero-inner { display: none; }
+
+  .section-lead { white-space: normal; }
+  .sp-break { display: block; }
+
+  .section-title { font-size: 22px; }
+  .section-lead { font-size: 20px; }
+  .member-name { font-size: 20px; }
+  .guideline-list > li { font-size: 18px; }
+  .guideline-list .num { flex-basis: 32px; width: 32px; height: 32px; }
+  .guideline-list .num-inner { width: 26px; height: 26px; font-size: 11px; }
+  .guideline-list .num-star { font-size: 6px; }
+
+  .btn-more-lg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    margin-top: 36px;
+    padding: 8px 16px;
+    font-size: 16px;
+  }
 
   .hero-art {
     top: auto;
@@ -1042,12 +1065,34 @@ button:focus-visible {
 
   .menu-overlay { align-items: center; padding: 32px 24px; }
   .menu-overlay-nav { align-items: center; }
+
+  .site-footer { height: auto; }
+  .footer-inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 40px 24px;
+  }
+  .footer-left { align-items: center; }
+  .footer-right {
+    height: auto;
+    align-items: center;
+    gap: 20px;
+  }
+  .footer-right-top { align-items: center; }
+  .footer-nav,
+  .footer-sub-links {
+    justify-content: center;
+    text-align: center;
+  }
+  .footer-nav { row-gap: 12px; }
+  .footer-sub-links { row-gap: 6px; }
+  .footer-break { display: block; flex-basis: 100%; height: 0; }
 }
 
 @media (max-width: 480px) {
   .member-photo { width: 200px; height: 171px; }
   .section { padding: 64px 0; }
-  .guideline-list > li { font-size: 24px; }
   .section-title.starred::before,
   .section-title.starred::after { display: none; }
 }
