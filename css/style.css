@@ -1005,6 +1005,27 @@ button:focus-visible {
   .nav-toggle { opacity: 1; transform: scale(1); pointer-events: auto; }
 
   .hero-social { left: 16px; bottom: 90px; }
+
+  .hero-inner { display: none; }
+
+  .hero-art {
+    top: auto;
+    bottom: 0;
+    width: 100vw;
+    height: 600px;
+    aspect-ratio: auto;
+    overflow: hidden;
+  }
+  .hero-art img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: auto;
+    height: 1550px;
+    max-width: none;
+    transform: translateX(-50%);
+    object-fit: cover;
+  }
 }
 
 @media (max-width: 700px) {
