@@ -872,6 +872,7 @@ button:focus-visible {
 .guideline-note-light {
   color: var(--color-hero-gold);
   font-size: 0.85rem;
+  margin: 4px 0 0;
 }
 
 .rule-list {
@@ -888,6 +889,16 @@ button:focus-visible {
   gap: 14px;
   font-size: 0.95rem;
 }
+.rule-list li.stacked {
+  display: block;
+}
+.guideline-item-main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.guideline-item-main p { margin: 0; }
+.rule-list li.stacked .guideline-note-light { margin: 6px 0 0 54px; }
 /* ---------- フッター ---------- */
 .site-footer {
   background: var(--color-hero-navy);
