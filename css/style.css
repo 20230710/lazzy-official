@@ -50,7 +50,7 @@ body {
   margin: 0;
   font-family: var(--font-body);
   color: var(--color-text-dark);
-  background: var(--color-ivory);
+  background: var(--color-hero-navy);
   line-height: 1.8;
   font-weight: 300;
 }
