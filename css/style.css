@@ -759,7 +759,8 @@ button:focus-visible {
   gap: 8px;
   font-size: 24px;
 }
-.guideline-list .num {
+.guideline-list .num,
+.rule-list .num {
   flex: 0 0 40px;
   width: 40px;
   height: 40px;
@@ -769,7 +770,8 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
 }
-.guideline-list .num-inner {
+.guideline-list .num-inner,
+.rule-list .num-inner {
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -784,10 +786,13 @@ button:focus-visible {
   justify-content: center;
   gap: 2px;
 }
-.guideline-list .num-star {
+.guideline-list .num-star,
+.rule-list .num-star {
   font-size: 8px;
   line-height: 1;
 }
+.rule-list .num { background: var(--color-white); }
+.rule-list .num-inner { border-color: var(--color-hero-navy); color: var(--color-hero-navy); }
 .guideline-sub {
   list-style: none;
   margin: 10px 0 0;
@@ -849,8 +854,8 @@ button:focus-visible {
 }
 .guideline-heading {
   font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 1.3rem;
+  font-weight: 300;
+  font-size: 24px;
   letter-spacing: 0.03em;
   display: flex;
   align-items: center;
@@ -865,7 +870,7 @@ button:focus-visible {
   position: relative;
 }
 .guideline-note-light {
-  color: var(--color-text-muted);
+  color: var(--color-hero-gold);
   font-size: 0.85rem;
 }
 
@@ -879,23 +884,10 @@ button:focus-visible {
 }
 .rule-list li {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 14px;
   font-size: 0.95rem;
 }
-.num-outline {
-  flex: 0 0 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 1px solid var(--color-text-light);
-  color: var(--color-text-light);
-  font-family: var(--font-heading);
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* ---------- フッター ---------- */
 .site-footer {
   background: var(--color-hero-navy);
@@ -1012,6 +1004,7 @@ button:focus-visible {
 
   .section-title { font-size: 22px; }
   .section-lead { font-size: 20px; }
+  .guideline-heading { font-size: 20px; }
   .member-name { font-size: 20px; }
   .guideline-list > li { font-size: 18px; }
   .guideline-list .num { flex-basis: 32px; width: 32px; height: 32px; }
