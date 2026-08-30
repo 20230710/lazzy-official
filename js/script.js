@@ -79,3 +79,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+// ---- ページローダー：最低3秒は表示し、読み込み完了後に非表示（TOPページのみ） ----
+// ローダーが消えるタイミングでヒーローの登場アニメーションを開始する
+window.addEventListener('load', function () {
+  var loader = document.getElementById('pageLoader');
+  if (!loader) return;
+  var MIN_DISPLAY_MS = 3000;
+  var remaining = MIN_DISPLAY_MS - performance.now();
+  setTimeout(function () {
+    loader.classList.add('is-hidden');
+    document.body.classList.add('content-revealed');
+  }, Math.max(0, remaining));
+});

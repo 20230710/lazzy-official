@@ -343,6 +343,71 @@ button:focus-visible {
 .menu-overlay-nav a:nth-child(6) { transition-delay: .35s; }
 .menu-overlay-nav a:hover { color: var(--color-gold-dark); }
 
+/* ---------- ページローダー ---------- */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(0deg, rgba(var(--color-hero-gold-rgb), 0.5) 0%, rgba(var(--color-hero-gold-rgb), 0) 55%),
+    var(--color-hero-navy);
+  -webkit-mask-image: radial-gradient(circle at center, transparent 0%, black 0%);
+  mask-image: radial-gradient(circle at center, transparent 0%, black 0%);
+  transition: visibility 0s linear .8s;
+}
+.page-loader.is-hidden {
+  visibility: hidden;
+  pointer-events: none;
+  animation: page-loader-iris-out .8s ease forwards;
+}
+@keyframes page-loader-iris-out {
+  0%   { -webkit-mask-image: radial-gradient(circle at center, transparent 0%, black 0%);   mask-image: radial-gradient(circle at center, transparent 0%, black 0%); }
+  10%  { -webkit-mask-image: radial-gradient(circle at center, transparent 10%, black 10%); mask-image: radial-gradient(circle at center, transparent 10%, black 10%); }
+  20%  { -webkit-mask-image: radial-gradient(circle at center, transparent 20%, black 20%); mask-image: radial-gradient(circle at center, transparent 20%, black 20%); }
+  30%  { -webkit-mask-image: radial-gradient(circle at center, transparent 30%, black 30%); mask-image: radial-gradient(circle at center, transparent 30%, black 30%); }
+  40%  { -webkit-mask-image: radial-gradient(circle at center, transparent 40%, black 40%); mask-image: radial-gradient(circle at center, transparent 40%, black 40%); }
+  50%  { -webkit-mask-image: radial-gradient(circle at center, transparent 50%, black 50%); mask-image: radial-gradient(circle at center, transparent 50%, black 50%); }
+  60%  { -webkit-mask-image: radial-gradient(circle at center, transparent 60%, black 60%); mask-image: radial-gradient(circle at center, transparent 60%, black 60%); }
+  70%  { -webkit-mask-image: radial-gradient(circle at center, transparent 70%, black 70%); mask-image: radial-gradient(circle at center, transparent 70%, black 70%); }
+  80%  { -webkit-mask-image: radial-gradient(circle at center, transparent 80%, black 80%); mask-image: radial-gradient(circle at center, transparent 80%, black 80%); }
+  90%  { -webkit-mask-image: radial-gradient(circle at center, transparent 90%, black 90%); mask-image: radial-gradient(circle at center, transparent 90%, black 90%); }
+  100% { -webkit-mask-image: radial-gradient(circle at center, transparent 100%, black 100%); mask-image: radial-gradient(circle at center, transparent 100%, black 100%); }
+}
+.page-loader-logo {
+  position: relative;
+  z-index: 1;
+  width: 160px;
+  height: auto;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 16px rgba(var(--color-white-rgb), 0.3));
+}
+.page-loader-dots {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 14px;
+  font-size: 20px;
+  color: var(--color-hero-gold);
+}
+.page-loader-dots span {
+  display: inline-block;
+  opacity: 0.3;
+  animation: page-loader-dot-pulse 0.9s ease-in-out infinite;
+}
+.page-loader-dots span:nth-child(1) { animation-delay: 0s; }
+.page-loader-dots span:nth-child(2) { animation-delay: .15s; }
+.page-loader-dots span:nth-child(3) { animation-delay: .3s; }
+@keyframes page-loader-dot-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
 /* ---------- ヒーロー ---------- */
 .hero {
   position: relative;
@@ -477,7 +542,9 @@ button:focus-visible {
   z-index: 1;
   pointer-events: none;
   opacity: 0;
-  animation: hero-art-in 1.1s ease-out .1s both;
+}
+body.content-revealed .hero-art {
+  animation: hero-art-in 1.1s ease-out both;
 }
 .hero-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
@@ -493,7 +560,9 @@ button:focus-visible {
   max-width: 90vw;
   z-index: 2;
   opacity: 0;
-  animation: hero-inner-in 2s ease-out 1.2s both;
+}
+body.content-revealed .hero-inner {
+  animation: hero-inner-in 2s ease-out 1s both;
 }
 
 @keyframes hero-inner-in {
