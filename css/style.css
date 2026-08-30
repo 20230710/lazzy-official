@@ -1,5 +1,5 @@
 /* =========================================================
-   《ユニット名》公式サイト スタイルシート
+   Lazzy 公式サイト スタイルシート
    色を変えたい場合は、下の :root の中の色コード(#で始まる値)を
    書き換えるだけで、サイト全体の配色が変わります。
    ========================================================= */
@@ -8,10 +8,8 @@
   --color-navy: #1c2745;
   --color-navy-deep: #141c33;
   --color-navy-deep-rgb: 20, 28, 51;
-  --color-navy-light: #2a3660;
   --color-ivory: #f7f3ea;
   --color-ivory-rgb: 247, 243, 234;
-  --color-ivory-dark: #ece5d3;
   --color-text-dark: #2d3a5a;
   --color-text-light: #ffffff;
   --color-text-muted: #ffffff;
@@ -21,9 +19,10 @@
   --color-gold-rgb: 205, 184, 136;
   --color-gold-dark: #b89f70;
   --color-border-light: rgba(var(--color-ivory-rgb), 0.18);
-  --color-border-dark: #ddd6c2;
   --color-white: #ffffff;
   --color-white-rgb: 255, 255, 255;
+  --color-black: #000000;
+  --color-date-gray: #d3d3d3;
 
   --color-hero-navy: #2d3a5a;
   --color-hero-gold: #d5c28a;
@@ -68,6 +67,18 @@ img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3 { margin: 0; }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .section-inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -87,14 +98,6 @@ button:focus-visible {
 }
 
 /* ---------- 共通見出し ---------- */
-.eyebrow {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin: 0 0 8px;
-}
 .section-title {
   font-family: var(--font-heading);
   font-weight: 400;
@@ -121,7 +124,6 @@ button:focus-visible {
   transform: translateY(0);
 }
 .reveal-d1 { transition-delay: .15s; }
-.reveal-d2 { transition-delay: .3s; }
 
 .reveal-stagger > .reveal-item {
   opacity: 0;
@@ -167,8 +169,7 @@ button:focus-visible {
 .section-title.starred::before { margin-right: 16px; }
 .section-title.starred::after { margin-left: 16px; animation-delay: 1.2s; }
 .section-title.starred.dark { color: var(--color-text-dark); }
-.section-navy .section-lead,
-.section-navy .eyebrow { color: var(--color-text-muted); }
+.section-navy .section-lead { color: var(--color-text-muted); }
 .section-ivory .section-lead { color: var(--color-text-muted-dark); }
 
 /* ---------- ヘッダー ---------- */
@@ -778,7 +779,7 @@ body.content-revealed .hero-inner {
   position: relative;
   width: 100%;
   padding-top: 56.25%;
-  background: #000;
+  background: var(--color-black);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -892,7 +893,7 @@ body.content-revealed .hero-inner {
 .works-group time {
   display: block;
   font-family: var(--font-heading);
-  color: #d3d3d3;
+  color: var(--color-date-gray);
   font-size: 12px;
   letter-spacing: 0.05em;
   margin-bottom: 6px;
