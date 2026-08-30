@@ -78,9 +78,27 @@ document.addEventListener('DOMContentLoaded', function () {
       target.classList.add('is-visible');
     });
   }
+
+  // ---- スクロールトップボタン ----
+  var scrollTopBtn = document.getElementById('scrollTopBtn');
+  if (scrollTopBtn) {
+    var SCROLL_TOP_THRESHOLD = 400;
+    var onScrollTopBtn = function () {
+      if (window.scrollY > SCROLL_TOP_THRESHOLD) {
+        scrollTopBtn.classList.add('is-visible');
+      } else {
+        scrollTopBtn.classList.remove('is-visible');
+      }
+    };
+    window.addEventListener('scroll', onScrollTopBtn, { passive: true });
+    onScrollTopBtn();
+    scrollTopBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 });
 
-// ---- ページローダー：最低3秒は表示し、読み込み完了後に非表示（TOPページのみ） ----
+// ---- ページローダー：最低2秒は表示し、読み込み完了後に非表示（TOPページのみ） ----
 // ローダーが消えるタイミングでヒーローの登場アニメーションを開始する
 window.addEventListener('load', function () {
   var loader = document.getElementById('pageLoader');

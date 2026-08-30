@@ -1063,6 +1063,34 @@ body.content-revealed .hero-inner {
   opacity: 0.6;
 }
 
+/* ---------- スクロールトップボタン ---------- */
+.scroll-top-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 150;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-navy-deep);
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(.8);
+  pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease, background-color .2s ease;
+}
+.scroll-top-btn.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+.scroll-top-btn:hover { background: var(--color-gold-dark); }
+
 /* =========================================================
    レスポンシブ
    ========================================================= */
