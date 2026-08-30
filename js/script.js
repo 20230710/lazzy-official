@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
 window.addEventListener('load', function () {
   var loader = document.getElementById('pageLoader');
   if (!loader) return;
-  var MIN_DISPLAY_MS = 3000;
+  var MIN_DISPLAY_MS = 2000;
   var remaining = MIN_DISPLAY_MS - performance.now();
   setTimeout(function () {
     loader.classList.add('is-hidden');

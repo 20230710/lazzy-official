@@ -360,12 +360,12 @@ button:focus-visible {
     var(--color-hero-navy);
   -webkit-mask-image: radial-gradient(circle at center, transparent 0%, black 0%);
   mask-image: radial-gradient(circle at center, transparent 0%, black 0%);
-  transition: visibility 0s linear .8s;
+  transition: visibility 0s linear .5s;
 }
 .page-loader.is-hidden {
   visibility: hidden;
   pointer-events: none;
-  animation: page-loader-iris-out .8s ease forwards;
+  animation: page-loader-iris-out .5s ease forwards;
 }
 @keyframes page-loader-iris-out {
   0%   { -webkit-mask-image: radial-gradient(circle at center, transparent 0%, black 0%);   mask-image: radial-gradient(circle at center, transparent 0%, black 0%); }
