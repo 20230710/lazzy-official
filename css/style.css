@@ -1111,8 +1111,6 @@ body.content-revealed .hero-inner {
     top: 12px; right: 20px; width: 56px; height: 56px;
   }
   .nav-toggle span { width: 24px; }
-  .nav-toggle.is-active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav-toggle.is-active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   .header-inner { height: 90px; padding: 12px 20px 0; }
   .logo-img { height: 44px; }
