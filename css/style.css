@@ -834,9 +834,9 @@ body.content-revealed .hero-inner {
 }
 .guideline-list > li {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
-  font-size: 24px;
+  font-size: 0.95rem;
 }
 .guideline-list .num,
 .rule-list .num {
@@ -872,6 +872,10 @@ body.content-revealed .hero-inner {
 }
 .rule-list .num { background: var(--color-white); }
 .rule-list .num-inner { border-color: var(--color-hero-navy); color: var(--color-hero-navy); }
+.guideline-list li.stacked { display: block; }
+.guideline-list .guideline-item-main { gap: 8px; }
+.guideline-list li.stacked .guideline-sub,
+.guideline-list li.stacked .guideline-note { margin-left: 48px; }
 .guideline-sub {
   list-style: none;
   margin: 10px 0 0;
@@ -1136,10 +1140,6 @@ body.content-revealed .hero-inner {
   .section-lead { font-size: 20px; }
   .guideline-heading { font-size: 20px; }
   .member-name { font-size: 20px; }
-  .guideline-list > li { font-size: 18px; }
-  .guideline-list .num { flex-basis: 32px; width: 32px; height: 32px; }
-  .guideline-list .num-inner { width: 26px; height: 26px; font-size: 11px; }
-  .guideline-list .num-star { font-size: 6px; }
 
   .btn-more-lg {
     display: inline-flex;
