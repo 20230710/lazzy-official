@@ -184,10 +184,10 @@ button:focus-visible {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  height: 125px;
+  height: 90px;
   max-width: none;
   margin: 0;
-  padding: 16px 40px 0;
+  padding: 12px 40px 0;
 }
 .logo-lockup {
   display: flex;
@@ -197,7 +197,7 @@ button:focus-visible {
 }
 .logo-img {
   display: block;
-  height: 64px;
+  height: 48px;
   width: auto;
   mix-blend-mode: screen;
 }
@@ -238,14 +238,14 @@ button:focus-visible {
 .nav-toggle {
   display: flex;
   position: fixed;
-  top: 16px;
-  right: 40px;
+  top: 12px;
+  right: 30px;
   z-index: 300;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  width: 80px; height: 80px;
+  width: 60px; height: 60px;
   background: var(--color-gold);
   border: none;
   border-radius: 8px;
@@ -260,7 +260,7 @@ button:focus-visible {
 .nav-toggle:hover { background: var(--color-gold-dark); }
 .nav-toggle span {
   display: block;
-  width: 34px;
+  width: 26px;
   height: 2px;
   background: var(--color-navy-deep);
   border-radius: 2px;
@@ -542,8 +542,8 @@ button:focus-visible {
   position: absolute;
   top: -31px;
   left: 50%;
-  width: min(969px, 82vw);
-  aspect-ratio: 969 / 1628;
+  width: 969px;
+  aspect-ratio: 2278 / 2962;
   z-index: 1;
   pointer-events: none;
   opacity: 0;
@@ -551,7 +551,7 @@ button:focus-visible {
 body.content-revealed .hero-art {
   animation: hero-art-in 1.1s ease-out both;
 }
-.hero-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hero-art img { display: block; width: 100%; height: 100%; object-fit: contain; }
 
 @keyframes hero-art-in {
   from { opacity: 0; transform: translateX(-50%) translateY(36px); }
@@ -674,14 +674,19 @@ body.content-revealed .hero-inner {
 }
 .member-photo img {
   position: absolute;
-  top: -67px;
-  left: -224px;
-  width: 997px;
   max-width: none;
-  height: 1295px;
+}
+.member-row .member-photo img {
+  top: -37px;
+  left: -365px;
+  width: 950px;
+  height: 1235.5px;
 }
 .member-row-reverse .member-photo img {
-  left: -516px;
+  top: -38px;
+  left: -331px;
+  width: 950px;
+  height: 1235.5px;
 }
 
 .member-info { flex: 1; }
@@ -1159,7 +1164,7 @@ body.content-revealed .hero-inner {
     top: 0;
     left: 50%;
     width: auto;
-    height: 1550px;
+    height: 950px;
     max-width: none;
     transform: translateX(-50%);
     object-fit: cover;
@@ -1208,12 +1213,17 @@ body.content-revealed .hero-inner {
 
 @media (max-width: 480px) {
   .member-photo { width: 200px; height: 171px; }
-  .member-photo img {
-    top: -47.35px;
-    left: -158.3px;
-    width: 704.69px;
-    height: 915.49px;
+  .member-row .member-photo img {
+    top: -26.15px;
+    left: -258px;
+    width: 671.4px;
+    height: 873.3px;
   }
-  .member-row-reverse .member-photo img { left: -364.66px; }
+  .member-row-reverse .member-photo img {
+    top: -26.85px;
+    left: -233.9px;
+    width: 671.4px;
+    height: 873.3px;
+  }
   .section { padding: 64px 0; }
 }
