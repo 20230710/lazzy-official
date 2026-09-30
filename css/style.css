@@ -1127,7 +1127,8 @@ body.content-revealed .hero-inner {
 
   .hero-social { left: 16px; bottom: 16px; }
 
-  .hero-inner { display: none; }
+  .hero-inner { top: 150px; max-width: 84vw; }
+  .hero-tagline { font-size: 19px; line-height: 1.7; }
 
   .section-lead { white-space: normal; }
   .sp-break { display: block; }
