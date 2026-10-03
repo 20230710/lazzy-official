@@ -69,10 +69,12 @@ window.scrollTo(0, 0);
     <nav class="main-nav">
       <a href="#top">Top</a>
       <a href="#profile">Profile</a>
+      <a href="#tags">Tags</a>
       <a href="#movie">Movie</a>
       <a href="#schedule">Schedule</a>
       <a href="#guideline">Stream Guideline</a>
       <a href="#works">Works</a>
+      <a href="#creators">Creators</a>
     </nav>
   </div>
 </header>
@@ -87,10 +89,12 @@ window.scrollTo(0, 0);
   <nav class="menu-overlay-nav">
     <a href="#top">Top</a>
     <a href="#profile">Profile</a>
+    <a href="#tags">Tags</a>
     <a href="#movie">Movie</a>
     <a href="#schedule">Schedule</a>
     <a href="#guideline">Stream Guideline</a>
     <a href="#works">Works</a>
+    <a href="#creators">Creators</a>
   </nav>
 </div>
 
@@ -248,6 +252,29 @@ window.scrollTo(0, 0);
     </div>
   </div>
 
+  <!-- ================= タグ ================= -->
+  <div class="section-inner center" id="tags">
+    <h2 class="section-title starred">TAGS</h2>
+    <ul class="tags-list reveal-stagger">
+      <li class="tags-item reveal-item">
+        <p class="tags-label"><span class="tags-star">✦</span>ALL</p>
+        <p class="tags-value">#うたたねごと</p>
+      </li>
+      <li class="tags-item reveal-item">
+        <p class="tags-label"><span class="tags-star">✦</span>ART</p>
+        <p class="tags-value">#レージアム</p>
+      </li>
+      <li class="tags-item reveal-item">
+        <p class="tags-label"><span class="tags-star">✦</span>FAN MARK</p>
+        <p class="tags-value">🎬🕛</p>
+      </li>
+      <li class="tags-item reveal-item">
+        <p class="tags-label"><span class="tags-star">✦</span>FAN NAME</p>
+        <p class="tags-value">？？？</p>
+      </li>
+    </ul>
+  </div>
+
   <!-- ================= 動画（YouTube埋め込み） ================= -->
   <div class="section-inner" id="movie">
     <div class="movie-panel">
@@ -289,9 +316,19 @@ window.scrollTo(0, 0);
   <!-- ================= スケジュール ================= -->
   <div class="section-inner center" id="schedule">
     <h2 class="section-title starred">SCHEDULE</h2>
-    <div class="schedule-panel reveal">
-      <iframe class="schedule-embed" src="https://www.youtube-nocookie.com/embed/kSiMOkfpaxQ?controls=0&modestbranding=1" title="配信スケジュール" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <div class="schedule-item reveal">
+      <div class="schedule-panel">
+        <iframe class="schedule-embed" src="https://www.youtube-nocookie.com/embed/kSiMOkfpaxQ?controls=0&modestbranding=1" title="配信スケジュール" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+      <p class="schedule-caption">週間スケジュール</p>
+    </div>
+    <div class="schedule-item reveal">
+      <div class="schedule-panel">
+        <iframe class="schedule-embed" src="https://www.youtube-nocookie.com/embed/1lvetdg2sME?controls=0&modestbranding=1" title="配信スケジュール" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+      <p class="schedule-caption">告知・宣伝</p>
     </div>
   </div>
 </section>
@@ -372,6 +409,37 @@ window.scrollTo(0, 0);
   </div>
 </section>
 
+<!-- ================= クリエイター ================= -->
+<section class="section section-ivory" id="creators">
+  <div class="section-inner center">
+    <h2 class="section-title starred dark">CREATORS</h2>
+  </div>
+  <div class="section-inner creators-inner">
+    <ul class="creators-list reveal-stagger">
+      <li class="creators-item reveal-item">
+        <p class="creators-role"><span class="creators-star">✦</span>Live2Dモデリング</p>
+        <p class="creators-name">藍眠ちよこ様</p>
+      </li>
+      <li class="creators-item reveal-item">
+        <p class="creators-role"><span class="creators-star">✦</span>VTuberイラスト</p>
+        <p class="creators-name">子守うたり</p>
+      </li>
+      <li class="creators-item reveal-item">
+        <p class="creators-role"><span class="creators-star">✦</span>OP/ED映像</p>
+        <p class="creators-name">murakami様</p>
+      </li>
+      <li class="creators-item reveal-item">
+        <p class="creators-role"><span class="creators-star">✦</span>背景素材・スケジュール</p>
+        <p class="creators-name">ツキシロ様</p>
+      </li>
+      <li class="creators-item reveal-item">
+        <p class="creators-role"><span class="creators-star">✦</span>ロゴ</p>
+        <p class="creators-name">design桑様</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
 <!-- ================= マーキー（下部） ================= -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
@@ -444,10 +512,12 @@ window.scrollTo(0, 0);
       <div class="footer-right-top">
         <nav class="footer-nav">
           <a href="#profile">Profile</a>
+          <a href="#tags">Tags</a>
           <a href="#movie">Movie</a>
           <a href="#schedule">Schedule</a>
           <a href="#guideline">Stream Guideline</a>
           <a href="#works">Works</a>
+          <a href="#creators">Creators</a>
           <a href="https://x.com/we_are_lazzy" target="_blank" rel="noopener">Contact</a>
         </nav>
 
