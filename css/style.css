@@ -981,6 +981,7 @@ body.content-revealed .hero-inner {
   gap: 14px;
 }
 .guideline-item-main p { margin: 0; }
+.rule-list li.stacked .guideline-sub { margin: 10px 0 0 54px; color: var(--color-text-muted); }
 .rule-list li.stacked .guideline-note-light { margin: 6px 0 0 54px; }
 /* ---------- フッター ---------- */
 .site-footer {
