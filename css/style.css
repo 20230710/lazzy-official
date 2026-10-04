@@ -39,7 +39,7 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; overscroll-behavior-y: none; }
+html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -1156,36 +1156,30 @@ body.content-revealed .hero-inner {
 }
 
 /* ---------- スクロールトップボタン ---------- */
-/* タブ型（参考: https://animate-club.com/button/page-top/ の「タブの形をしたページトップボタン①」） */
 .scroll-top-btn {
   position: fixed;
-  right: -80px;
-  bottom: 260px; /* フッター（高さ240px）と重ならない最小位置 */
+  right: 24px;
+  bottom: 24px;
   z-index: 150;
-  width: 60px;
-  height: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  border-radius: 10px 0 0 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   background: var(--color-gold);
   border: none;
-  color: var(--color-text-light);
-  font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-navy-deep);
   cursor: pointer;
   opacity: 0;
-  visibility: hidden;
-  transition: right .3s ease, opacity .3s ease, background-color .2s ease;
+  transform: scale(.8);
+  pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease, background-color .2s ease;
 }
 .scroll-top-btn.is-visible {
-  right: -2px;
   opacity: 1;
-  visibility: visible;
+  transform: scale(1);
+  pointer-events: auto;
 }
 .scroll-top-btn:hover { background: var(--color-gold-dark); }
 
@@ -1258,10 +1252,6 @@ body.content-revealed .hero-inner {
 }
 
 @media (max-width: 700px) {
-  /* SP版はフッターの高さがコンテンツ量で変わるため、下基準ではなく
-     上基準の固定位置にして重なりを避ける */
-  .scroll-top-btn { top: 110px; bottom: auto; }
-
   .member-row,
   .member-row-reverse {
     flex-direction: column;
