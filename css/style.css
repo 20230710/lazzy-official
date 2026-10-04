@@ -1292,6 +1292,7 @@ body.content-revealed .hero-inner {
 }
 
 @media (max-width: 480px) {
+  .section.guideline-page { padding-top: 88px; }
   .member-photo { width: 200px; height: 171px; }
   .member-row .member-photo img {
     top: -26.15px;
