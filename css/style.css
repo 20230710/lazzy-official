@@ -47,6 +47,12 @@
   /* ボタンや選択中の項目に使う金色グラデーション（両端を少し暗く） */
   --gradient-gold: linear-gradient(90deg, var(--color-gold-edge) 0%, var(--color-hero-gold) 50%, var(--color-gold-edge) 100%);
   --shadow-soft: 0 0 30px rgba(var(--color-black-rgb), 0.08);
+  --noise-opacity: 0.05;
+  --bg-stars-opacity: 0.5;
+
+  /* マスク用アイコン（SVGを直接埋め込み。ファイルを直接開いたときもマスクが効くように） */
+  --icon-sparkle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 42'%3E%3Cpath d='M20.02 0s-.1 11.08 4.72 14.6C29.56 18.13 40 14.6 40 14.6s-10.5 3.32-12.35 9.03c-1.84 5.7 4.72 14.6 4.72 14.6s-6.39-9.03-12.35-9.03-12.35 9.03-12.35 9.03 6.56-8.9 4.72-14.6C10.55 17.92.05 14.6.05 14.6s10.44 3.53 15.26 0C20.13 11.08 20.02 0 20.02 0Z' fill='%23fff'/%3E%3Cpath d='M39.86 27.7s-10.35-3.7-15.23-.25c-4.87 3.45-4.96 14.55-4.96 14.55s.3-11.1-4.45-14.71C10.48 23.68 0 27.04 0 27.04s10.54-3.16 12.48-8.84C14.42 12.51 8.03 3.49 8.03 3.49s6.21 9.15 12.16 9.25c5.95.1 12.48-8.84 12.48-8.84s-6.7 8.81-4.97 14.55c1.74 5.75 12.16 9.25 12.16 9.25Z' fill='%23fff'/%3E%3C/svg%3E");
+  --icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 9' fill='none'%3E%3Cpath d='M.75.75 4.5 4.5.75 8.25' stroke='%23fff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 
   --max-width: 1120px;
   --content-width: 800px;
@@ -111,25 +117,30 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
-/* ---------- 星アイコン（svg/star.svg をマスクにして文字色で塗る） ---------- */
+/* ---------- 星アイコン（MVの星と同じ「✦」の文字で描く。大きさは各所の font-size で調整） ---------- */
 .section-title.starred::before,
 .section-title.starred::after,
 .section-divider::before,
 .section-divider::after,
 .sub-heading::before,
 .btn-more::after,
-.num-star,
-.marquee-star,
-.page-line-star,
+.num-star::before,
 .works-item::before,
-.footer-totop-star,
+.footer-totop-star::before,
 .tags-label::before,
 .music-title::before,
 .music-title::after,
 .guideline-heading::before {
-  background-color: currentColor;
-  -webkit-mask: url(../svg/star.svg) center / contain no-repeat;
-  mask: url(../svg/star.svg) center / contain no-repeat;
+  content: '✦';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0;
+  color: currentColor;
 }
 
 /* ---------- 共通見出し ---------- */
@@ -156,14 +167,10 @@ button:focus-visible {
 /* 見出しの左右に星を3つずつ並べる */
 .section-title.starred::before,
 .section-title.starred::after {
-  content: '';
+  content: '✦ ✦ ✦';
   flex: 0 0 auto;
-  width: 101px;
-  height: 27px;
-  -webkit-mask-size: 27px 27px;
-  mask-size: 27px 27px;
-  -webkit-mask-repeat: space no-repeat;
-  mask-repeat: space no-repeat;
+  font-size: 24px;
+  word-spacing: 4px;
   animation: title-twinkle 2.4s ease-in-out infinite alternate;
 }
 .section-title.starred::after { animation-delay: 1.2s; }
@@ -231,11 +238,11 @@ button:focus-visible {
 .section-ivory .section-divider { --divider-rgb: var(--color-hero-navy-rgb); }
 .section-divider::before,
 .section-divider::after {
-  content: '';
   position: absolute;
   top: 0;
   width: 27px;
   height: 27px;
+  font-size: 24px;
 }
 .section-divider::before { left: 0; }
 .section-divider::after { right: 0; }
@@ -252,10 +259,10 @@ button:focus-visible {
   margin: 0 0 8px;
 }
 .sub-heading::before {
-  content: '';
   flex: 0 0 27px;
   width: 27px;
   height: 27px;
+  font-size: 24px;
 }
 
 /* ---------- ヘッダー ---------- */
@@ -719,12 +726,6 @@ body.content-revealed .hero-inner {
   color: var(--color-text-muted);
   margin-right: 24px;
 }
-/* 「✦」の文字は隠し、同じ大きさの星アイコンに置き換える */
-.marquee-track .marquee-star {
-  width: 20px;
-  height: 20px;
-  font-size: 0;
-}
 @keyframes scroll-left {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -749,11 +750,37 @@ body::before {
   pointer-events: none;
   background-color: var(--color-hero-navy);
   background-image:
-    url(../images/noise.png),
     radial-gradient(circle 520px at 95% 70%, rgba(var(--color-glow-rgb), 0.08), rgba(var(--color-glow-rgb), 0)),
     radial-gradient(circle 520px at 0% 95%, rgba(var(--color-glow-rgb), 0.06), rgba(var(--color-glow-rgb), 0)),
     linear-gradient(rgba(var(--color-white-rgb), 0.05), rgba(var(--color-white-rgb), 0.05));
-  background-size: 1024px 1024px, auto, auto, auto;
+}
+/* 星のノイズのテクスチャ（濃さは :root の --noise-opacity で調整。ヒーロー・ローディングにも同じものを重ねる） */
+body::after,
+.hero::before,
+.page-loader::before {
+  content: '';
+  pointer-events: none;
+  background: url(../images/noise.png) 0 0 / 1024px 1024px repeat;
+  opacity: var(--noise-opacity);
+}
+body::after {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+.hero::before,
+.page-loader::before {
+  position: absolute;
+  inset: 0;
+}
+/* 固定背景の星（MVと同じ .hero-stars / .hero-star / .hero-shooting-star を画面に固定して使う） */
+.page-bg-stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--bg-stars-opacity);
 }
 .section-navy { color: var(--color-text-light); }
 .section-navy .section-title { color: var(--color-text-light); }
@@ -764,70 +791,73 @@ body::before {
 }
 #profile { padding-top: 160px; }
 
-/* 背景の大きな英字 */
+/* 背景の大きな英字（左右中央。高さはセクションごとに top で指定） */
 .section-watermark {
   position: absolute;
   z-index: 0;
   top: 23px;
-  left: calc(50% - 192px);
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 200px;
+  font-size: 160px;
   line-height: 1.25;
-  color: rgba(var(--color-white-rgb), 0.07);
+  color: rgba(var(--color-white-rgb), 0.05);
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
+  /* 下に行くにつれて透明になる */
+  -webkit-mask-image: linear-gradient(to bottom, var(--color-black) 20%, transparent 85%);
+  mask-image: linear-gradient(to bottom, var(--color-black) 20%, transparent 85%);
 }
-.section-ivory .section-watermark { color: rgba(var(--color-hero-navy-rgb), 0.08); }
-#tags .section-watermark { top: -40px; left: calc(50% + 60px); }
-#movie .section-watermark { top: -56px; left: calc(50% + 20px); }
-#schedule .section-watermark { top: -56px; left: calc(50% - 422px); }
-#guideline .section-watermark { top: -55px; left: calc(50% - 495px); }
-#works .section-watermark { top: -54px; left: calc(50% - 76px); }
+.section-ivory .section-watermark { color: rgba(var(--color-hero-navy-rgb), 0.06); }
+#movie .section-watermark { top: -56px; }
+#schedule .section-watermark { top: -56px; }
+#guideline .section-watermark { top: -55px; }
+#works .section-watermark { top: -54px; }
+#creators .section-watermark { top: -55px; }
 
 /* 流れ星（ヒーローと同じアニメーションをセクション内の別の位置で使う） */
-.section .hero-shooting-star { z-index: 0; }
-.section-shooting-a { top: 10%; right: 6%;  width: 170px; animation-duration: 6.5s; animation-delay: .8s; }
-.section-shooting-b { top: 48%; left: 14%;  width: 120px; animation-duration: 8s;   animation-delay: 3.2s; }
-.section-shooting-c { top: 72%; right: 26%; width: 140px; animation-duration: 7.2s; animation-delay: 5s; }
+/* opacity はアニメーションが使うので、線の色の濃さで背景の星と同じだけ薄くする */
+.section .hero-shooting-star {
+  z-index: 0;
+  background: linear-gradient(90deg, transparent, rgba(var(--color-white-rgb), calc(0.9 * var(--bg-stars-opacity))));
+}
+.section-shooting-a { top: 10%; right: 6%;  width: 170px; animation-duration: 5.6s; animation-delay: .8s; }
+.section-shooting-b { top: 48%; left: 14%;  width: 120px; animation-duration: 6.6s; animation-delay: 2.8s; }
+.section-shooting-c { top: 72%; right: 26%; width: 140px; animation-duration: 6s;   animation-delay: 4.4s; }
 
-/* キラキラ（8方向の星） */
+/* キラキラ（8方向の星）。セクションごとに位置・大きさ・光る間隔をばらして、無規則に見せる */
 .deco-sparkle {
   position: absolute;
   z-index: 0;
-  width: 25px;
-  height: 26px;
+  width: var(--sparkle-size, 25px);
+  aspect-ratio: 25 / 26;
   background-color: var(--color-ivory);
-  -webkit-mask: url(../svg/sparkle.svg) center / contain no-repeat;
-  mask: url(../svg/sparkle.svg) center / contain no-repeat;
+  -webkit-mask: var(--icon-sparkle) center / contain no-repeat;
+  mask: var(--icon-sparkle) center / contain no-repeat;
   animation: twinkle 4s ease-in-out infinite alternate;
 }
-.deco-sparkle-a { top: 3%;  left: 30%;  animation-delay: .4s; }
-.deco-sparkle-b { top: 52%; left: 8%;   animation-delay: 1.6s; }
-.deco-sparkle-c { top: 82%; right: 12%; animation-delay: 2.8s; }
+/* 中身（幅800pxの列）にかからないよう、横位置は列の端から測る。
+   「上下の余白」組はタイトルの上やセクションの最後の余白に、「左右の余白」組は列の外側に置く */
+/* 上下の余白 */
+#profile .deco-sparkle-a         { --sparkle-size: 26px; top: 72px;  left: calc(50% - 330px); animation-duration: 3.6s; animation-delay: .4s; }
+#movie .deco-sparkle-a           { --sparkle-size: 19px; top: 26px;  left: calc(50% + 250px); animation-duration: 5.1s; animation-delay: 2.4s; }
+#movie .deco-sparkle-c           { --sparkle-size: 28px; bottom: 22px; left: calc(50% - 380px); animation-duration: 3.9s; animation-delay: .7s; }
+#schedule .deco-sparkle-a        { --sparkle-size: 23px; top: 28px;  left: calc(50% - 280px); animation-duration: 4.4s; animation-delay: 1.5s; }
+.guideline-page .deco-sparkle-a  { --sparkle-size: 21px; top: 150px; left: calc(50% + 300px); animation-duration: 4.9s; animation-delay: 1.3s; }
+.music-page .deco-sparkle-a      { --sparkle-size: 24px; top: 140px; left: calc(50% - 340px); animation-duration: 4.3s; animation-delay: 2.2s; }
+.music-page .deco-sparkle-c      { --sparkle-size: 18px; bottom: 60px; left: calc(50% + 300px); animation-duration: 5s;   animation-delay: .8s; }
+/* 左右の余白 */
+#profile .deco-sparkle-b         { --sparkle-size: 17px; top: 41%; left: calc(50% - 400px - 87px); animation-duration: 4.8s; animation-delay: 1.9s; }
+#profile .deco-sparkle-c         { --sparkle-size: 22px; top: 77%; left: calc(50% + 400px + 50px); animation-duration: 4.2s; animation-delay: 1.1s; }
+#schedule .deco-sparkle-b        { --sparkle-size: 16px; top: 46%; left: calc(50% + 400px + 40px); animation-duration: 3.4s; animation-delay: .2s; }
+#schedule .deco-sparkle-c        { --sparkle-size: 21px; top: 84%; left: calc(50% - 400px - 81px); animation-duration: 5.3s; animation-delay: 2.9s; }
+#works .deco-sparkle-a           { --sparkle-size: 27px; top: 19%; left: calc(50% + 400px + 62px); animation-duration: 4.6s; animation-delay: .9s; }
+#works .deco-sparkle-b           { --sparkle-size: 18px; top: 66%; left: calc(50% - 400px - 98px); animation-duration: 3.7s; animation-delay: 2.1s; }
+.guideline-page .deco-sparkle-c  { --sparkle-size: 26px; top: 57%; left: calc(50% - 400px - 76px); animation-duration: 3.8s; animation-delay: .5s; }
 
-/* ---------- 左側の金色ライン ---------- */
 .page-main { position: relative; }
-.page-line {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 28px;
-  z-index: 2;
-  width: 79px;
-  pointer-events: none;
-  color: var(--color-hero-gold);
-  background: linear-gradient(var(--color-hero-gold), var(--color-hero-gold)) center / 1.5px 100% no-repeat;
-}
-.page-line-star {
-  position: sticky;
-  top: calc(50vh - 39.5px);
-  display: block;
-  width: 79px;
-  height: 79px;
-  margin-top: 470px;
-}
 
 /* ---------- メンバー ---------- */
 #members { max-width: calc(707px + 48px); margin-top: 40px; }
@@ -942,10 +972,10 @@ body::before {
   transition: filter .2s ease, transform .2s ease;
 }
 .btn-more::after {
-  content: '';
   flex: 0 0 auto;
   width: 18px;
   height: 18px;
+  font-size: 15px;
 }
 .btn-more:hover { filter: brightness(1.06); transform: translateY(-1px); }
 .btn-more-lg {
@@ -955,7 +985,8 @@ body::before {
 }
 .btn-more-block { display: flex; width: 100%; }
 
-/* ---------- タグ ---------- */
+/* ---------- タグ（PROFILEセクション内） ---------- */
+#tags { margin-top: 40px; }
 .tags-list {
   list-style: none;
   margin: 0;
@@ -979,9 +1010,9 @@ body::before {
   margin: 0 0 6px;
 }
 .tags-label::before {
-  content: '';
   width: 14px;
   height: 14px;
+  font-size: 12px;
   color: var(--color-hero-gold);
 }
 .tags-value {
@@ -1109,7 +1140,11 @@ body::before {
   display: block;
   width: 12px;
   height: 12px;
-  font-size: 0;
+}
+.num-star::before {
+  width: 100%;
+  height: 100%;
+  font-size: 10px;
 }
 .rule-list .num { background: var(--color-white); }
 .rule-list .num-inner { border-color: var(--color-hero-navy); color: var(--color-hero-navy); }
@@ -1207,13 +1242,13 @@ body::before {
 }
 .works-item.is-active p { font-size: 24px; }
 .works-item::before {
-  content: '';
   position: absolute;
   top: 50%;
   left: -34px;
   width: 34px;
   height: 34px;
   margin-top: -17px;
+  font-size: 30px;
   color: var(--color-gold-shade);
   opacity: 0;
   transform: scale(.4);
@@ -1246,8 +1281,8 @@ body::before {
   width: 40px;
   height: 42px;
   background-color: var(--color-hero-gold);
-  -webkit-mask: url(../svg/sparkle.svg) center / contain no-repeat;
-  mask: url(../svg/sparkle.svg) center / contain no-repeat;
+  -webkit-mask: var(--icon-sparkle) center / contain no-repeat;
+  mask: var(--icon-sparkle) center / contain no-repeat;
 }
 .creators-role {
   font-size: 16px;
@@ -1264,10 +1299,10 @@ body::before {
 
 /* ---------- 下層ページ共通 ---------- */
 .subpage-section { padding: 272px 0 160px; }
-.subpage-section .section-watermark { top: 24px; }
+/* トップページと同じく「タイトルの約136px上」に英字を置く（272 − 136） */
+.subpage-section .section-watermark { top: 136px; }
 
 /* ---------- 下層ページ（GUIDELINE） ---------- */
-.guideline-page .section-watermark { left: calc(50% - 485px); }
 .guideline-page-inner { display: flex; flex-direction: column; }
 .guideline-block {
   display: flex;
@@ -1293,8 +1328,8 @@ body::before {
   line-height: 1.45;
 }
 .guideline-heading::before {
-  content: '';
   flex: 0 0 27px;
+  font-size: 24px;
   width: 27px;
   height: 27px;
 }
@@ -1324,7 +1359,6 @@ body::before {
 .rule-list li.stacked .guideline-note-light { margin: 6px 0 0 48px; }
 
 /* ---------- 下層ページ（MUSIC） ---------- */
-.music-page .section-watermark { left: calc(50% + 32px); }
 .music-page .section-title { margin-bottom: 24px; }
 .music-filter {
   display: flex;
@@ -1437,8 +1471,8 @@ body::before {
 }
 .music-title::before,
 .music-title::after {
-  content: '';
   flex: 0 0 11px;
+  font-size: 10px;
   width: 11px;
   height: 11px;
 }
@@ -1508,8 +1542,8 @@ body::before {
   width: 12px;
   height: 12px;
   background-color: currentColor;
-  -webkit-mask: url(../svg/chevron.svg) center / 4px 8px no-repeat;
-  mask: url(../svg/chevron.svg) center / 4px 8px no-repeat;
+  -webkit-mask: var(--icon-chevron) center / 4px 8px no-repeat;
+  mask: var(--icon-chevron) center / 4px 8px no-repeat;
 }
 .footer-social {
   display: flex;
@@ -1548,6 +1582,11 @@ body::before {
   height: 27px;
   color: var(--color-ivory);
 }
+.footer-totop-star::before {
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+}
 
 /* =========================================================
    レスポンシブ
@@ -1560,7 +1599,14 @@ body::before {
 }
 
 @media (max-width: 960px) {
-  .page-line { display: none; }
+  /* 左右の余白が狭くなるので、列の外側に置いたキラキラは表示しない */
+  #profile .deco-sparkle-b,
+  #profile .deco-sparkle-c,
+  #schedule .deco-sparkle-b,
+  #schedule .deco-sparkle-c,
+  #works .deco-sparkle-a,
+  #works .deco-sparkle-b,
+  .guideline-page .deco-sparkle-c { display: none; }
 }
 
 @media (max-width: 860px) {
@@ -1603,19 +1649,28 @@ body::before {
   .subpage-section { padding: 152px 0 96px; }
 
   .section-watermark,
-  .subpage-section .section-watermark,
-  #tags .section-watermark,
   #movie .section-watermark,
   #schedule .section-watermark,
   #guideline .section-watermark,
   #works .section-watermark,
-  .guideline-page .section-watermark,
-  .music-page .section-watermark {
+  #creators .section-watermark {
     top: 0;
     left: auto;
     right: -12px;
+    transform: none;
     font-size: 88px;
   }
+  /* 下層ページはタイトル上の余白が 88px 多い分、英字も同じだけ下げる（152 − 64） */
+  .subpage-section .section-watermark { top: 88px; }
+
+  /* キラキラはタイトルの上・セクションの最後の余白に収める */
+  #profile .deco-sparkle-a        { top: 40px;   left: 10%; }
+  #movie .deco-sparkle-a          { top: 22px;   left: 72%; }
+  #movie .deco-sparkle-c          { bottom: 18px; left: 12%; }
+  #schedule .deco-sparkle-a       { top: 20px;   left: 16%; }
+  .guideline-page .deco-sparkle-a { top: 100px;  left: 76%; }
+  .music-page .deco-sparkle-a     { top: 100px;  left: 12%; }
+  .music-page .deco-sparkle-c     { bottom: 30px; left: 72%; }
 
   .section-lead { white-space: normal; }
   .sp-break { display: block; }
@@ -1623,14 +1678,12 @@ body::before {
   .section-title { font-size: 24px; gap: 6px; margin-bottom: 28px; }
   .section-title.starred::before,
   .section-title.starred::after {
-    width: 52px;
-    height: 16px;
-    -webkit-mask-size: 16px 16px;
-    mask-size: 16px 16px;
+    font-size: 14px;
+    word-spacing: 0;
   }
   .section-lead { font-size: 20px; }
   .sub-heading, .guideline-heading { font-size: 22px; }
-  .sub-heading::before, .guideline-heading::before { flex-basis: 20px; width: 20px; height: 20px; }
+  .sub-heading::before, .guideline-heading::before { flex-basis: 20px; width: 20px; height: 20px; font-size: 18px; }
   .member-name { font-size: 24px; justify-content: center; }
   .section-divider { margin-top: 32px; }
 

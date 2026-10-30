@@ -72,7 +72,7 @@ window.scrollTo(0, 0);
       <a href="#tags">Tags</a>
       <a href="#movie">Movie</a>
       <a href="#schedule">Schedule</a>
-      <a href="#guideline">Stream Guideline</a>
+      <a href="#guideline">Guideline</a>
       <a href="#works">Works</a>
       <a href="#creators">Creators</a>
     </nav>
@@ -92,10 +92,28 @@ window.scrollTo(0, 0);
     <a href="#tags">Tags</a>
     <a href="#movie">Movie</a>
     <a href="#schedule">Schedule</a>
-    <a href="#guideline">Stream Guideline</a>
+    <a href="#guideline">Guideline</a>
     <a href="#works">Works</a>
     <a href="#creators">Creators</a>
   </nav>
+</div>
+
+<!-- 固定背景の星（MVと同じ星・流れ星。スクロールしても動かない） -->
+<div class="page-bg-stars" aria-hidden="true">
+  <div class="hero-stars"></div>
+  <span class="hero-star hero-star-1">✦</span>
+  <span class="hero-star hero-star-2">✧</span>
+  <span class="hero-star hero-star-3">✦</span>
+  <span class="hero-star hero-star-4">✧</span>
+  <span class="hero-star hero-star-5">✦</span>
+  <span class="hero-star hero-star-6">✧</span>
+  <span class="hero-star hero-star-7">✦</span>
+  <span class="hero-star hero-star-8">✧</span>
+  <span class="hero-star hero-star-9">✦</span>
+  <span class="hero-shooting-star hero-shooting-star-1"></span>
+  <span class="hero-shooting-star hero-shooting-star-2"></span>
+  <span class="hero-shooting-star hero-shooting-star-3"></span>
+  <span class="hero-shooting-star hero-shooting-star-4"></span>
 </div>
 
 <!-- ================= ヒーロー（トップ） ================= -->
@@ -188,9 +206,6 @@ window.scrollTo(0, 0);
 </div>
 
 <main class="page-main">
-<!-- 左側の金色ライン（星はスクロールに合わせて画面中央に付いてくる） -->
-<div class="page-line" aria-hidden="true"><span class="page-line-star"></span></div>
-
 <!-- ================= プロフィール ================= -->
 <section class="section section-navy" id="profile">
   <span class="section-watermark" aria-hidden="true">PROFILE</span>
@@ -267,16 +282,10 @@ window.scrollTo(0, 0);
   <div class="section-inner">
     <div class="section-divider" aria-hidden="true"></div>
   </div>
-</section>
 
-<!-- ================= タグ ================= -->
-<section class="section section-navy" id="tags">
-  <span class="section-watermark" aria-hidden="true">TAGS</span>
-  <span class="hero-shooting-star section-shooting-a" aria-hidden="true"></span>
-  <span class="deco-sparkle deco-sparkle-b" aria-hidden="true"></span>
-
-  <div class="section-inner center">
-    <h2 class="section-title starred">TAGS</h2>
+  <!-- ================= タグ ================= -->
+  <div class="section-inner center" id="tags">
+    <h3 class="section-title starred">TAGS</h3>
     <ul class="tags-list reveal-stagger">
       <li class="tags-item reveal-item">
         <p class="tags-label">ALL</p>
@@ -295,6 +304,9 @@ window.scrollTo(0, 0);
         <p class="tags-value">？？？</p>
       </li>
     </ul>
+  </div>
+
+  <div class="section-inner">
     <div class="section-divider" aria-hidden="true"></div>
   </div>
 </section>
@@ -385,7 +397,7 @@ window.scrollTo(0, 0);
   <span class="section-watermark" aria-hidden="true">GUIDELINE</span>
 
   <div class="section-inner center">
-    <h2 class="section-title starred dark">STREAM GUIDELINE</h2>
+    <h2 class="section-title starred dark">GUIDELINE</h2>
   </div>
   <div class="section-inner guideline-inner">
     <div class="guideline-body">
@@ -470,6 +482,8 @@ window.scrollTo(0, 0);
 
 <!-- ================= クリエイター ================= -->
 <section class="section section-ivory" id="creators">
+  <span class="section-watermark" aria-hidden="true">CREATORS</span>
+
   <div class="section-inner center">
     <h2 class="section-title starred dark">CREATORS</h2>
   </div>
@@ -575,7 +589,7 @@ window.scrollTo(0, 0);
           <a href="#tags">Tags</a>
           <a href="#movie">Movie</a>
           <a href="#schedule">Schedule</a>
-          <a href="#guideline">Stream Guideline</a>
+          <a href="#guideline">Guideline</a>
           <a href="#works">Works</a>
           <a href="#creators">Creators</a>
           <a href="https://x.com/we_are_lazzy" target="_blank" rel="noopener">Contact</a>
