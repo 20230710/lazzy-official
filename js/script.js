@@ -26,6 +26,34 @@ document.addEventListener('DOMContentLoaded', function () {
     onScroll();
   }
 
+  // ---- ヘッダーのロゴが明るい背景（アイボリーのセクション・MOVIEの白いパネル）に重なったら紺色に切り替え ----
+  var headerLogo = header && header.querySelector('.logo-lockup');
+  if (headerLogo) {
+    var lightAreas = document.querySelectorAll('.section-ivory, .movie-panel');
+    var logoTicking = false;
+    var updateLogoColor = function () {
+      logoTicking = false;
+      var r = headerLogo.getBoundingClientRect();
+      var x = r.left + r.width / 2;
+      var y = r.top + r.height / 2;
+      var onLight = false;
+      lightAreas.forEach(function (area) {
+        var b = area.getBoundingClientRect();
+        if (x >= b.left && x <= b.right && y >= b.top && y <= b.bottom) onLight = true;
+      });
+      header.classList.toggle('is-on-light', onLight);
+    };
+    var requestLogoUpdate = function () {
+      if (!logoTicking) {
+        logoTicking = true;
+        requestAnimationFrame(updateLogoColor);
+      }
+    };
+    window.addEventListener('scroll', requestLogoUpdate, { passive: true });
+    window.addEventListener('resize', requestLogoUpdate);
+    updateLogoColor();
+  }
+
   // ---- フルスクリーンメニューの開閉（ハンバーガー1つで開閉を兼用） ----
   if (navToggle && menuOverlay) {
     var openMenu = function () {
@@ -78,6 +106,110 @@ document.addEventListener('DOMContentLoaded', function () {
     revealTargets.forEach(function (target) {
       target.classList.add('is-visible');
     });
+  }
+
+  // ---- YouTube：クリックするまではサムネイル＋再生ボタンだけを表示し、クリックしたらその場で再生 ----
+  // HTMLの data-url には watch?v= / youtu.be/ / shorts/ / embed/ のどの形のURLでも、動画IDだけでも書ける
+  // （再生が始まった後のYouTubeの表示は隠さない。上に何かをかぶせて隠すのは規約違反のため）
+  document.querySelectorAll('.yt').forEach(function (el) {
+    var src = el.getAttribute('data-url') || el.getAttribute('data-id') || '';
+    var match = src.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);
+    var id = match ? match[1] : src.trim();
+    var title = el.getAttribute('data-title') || '動画';
+    if (!id) return;
+
+    // サムネイルは高画質から順に試す（maxres 1280×720 → sd 640×480 → hq 480×360）。
+    // その画質がない動画では、YouTubeは 120×90 の灰色の画像を返すので、それを見たら次に切り替える
+    var thumbSizes = ['maxresdefault', 'sddefault', 'hqdefault'];
+    var thumbIndex = 0;
+    var thumb = document.createElement('img');
+    var nextThumb = function () {
+      if (thumbIndex < thumbSizes.length - 1) {
+        thumbIndex++;
+        thumb.src = 'https://i.ytimg.com/vi/' + id + '/' + thumbSizes[thumbIndex] + '.jpg';
+      }
+    };
+    thumb.addEventListener('load', function () {
+      if (thumb.naturalWidth <= 120) nextThumb();
+    });
+    thumb.addEventListener('error', nextThumb);
+    thumb.src = 'https://i.ytimg.com/vi/' + id + '/' + thumbSizes[0] + '.jpg';
+    thumb.alt = '';
+    thumb.loading = 'lazy';
+
+    // class="yt yt-lightbox" のときは再生せず、クリックでサムネイルを大きく表示する
+    // （再生ボタンは出さず、枠そのものをボタンとして扱う。キーボードでも Enter / スペースで開ける）
+    if (el.classList.contains('yt-lightbox')) {
+      el.replaceChildren(thumb);
+      el.tabIndex = 0;
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', title + 'を拡大表示');
+      el.addEventListener('click', function () {
+        openLightbox(thumb.currentSrc || thumb.src, title, el);
+      });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(thumb.currentSrc || thumb.src, title, el);
+        }
+      });
+      return;
+    }
+
+    var play = document.createElement('button');
+    play.type = 'button';
+    play.className = 'yt-play';
+    play.setAttribute('aria-label', title + 'を再生');
+    el.replaceChildren(thumb, play);
+
+    el.addEventListener('click', function () {
+      var player = document.createElement('iframe');
+      player.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+      player.title = title;
+      player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      player.allowFullscreen = true;
+      el.replaceChildren(player);
+      el.style.cursor = 'auto';
+    }, { once: true });
+  });
+
+  // ---- サムネイルの拡大表示（初めて開くときに作る。×ボタン・背景のクリック・Escで閉じる） ----
+  var lightbox = null;
+  var lightboxImg = null;
+  var lightboxClose = null;
+  var lightboxReturnFocus = null;
+  var closeLightbox = function () {
+    if (!lightbox || !lightbox.classList.contains('is-open')) return;
+    lightbox.classList.remove('is-open');
+    document.body.classList.remove('lightbox-open');
+    if (lightboxReturnFocus) lightboxReturnFocus.focus();
+  };
+  function openLightbox(src, title, opener) {
+    if (!lightbox) {
+      lightbox = document.createElement('div');
+      lightbox.className = 'lightbox';
+      lightbox.setAttribute('role', 'dialog');
+      lightbox.setAttribute('aria-modal', 'true');
+      lightboxImg = document.createElement('img');
+      lightboxImg.className = 'lightbox-img';
+      lightboxClose = document.createElement('button');
+      lightboxClose.type = 'button';
+      lightboxClose.className = 'lightbox-close';
+      lightboxClose.setAttribute('aria-label', '閉じる');
+      lightbox.append(lightboxImg, lightboxClose);
+      document.body.appendChild(lightbox);
+      lightbox.addEventListener('click', closeLightbox);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeLightbox();
+      });
+    }
+    lightboxImg.src = src;
+    lightboxImg.alt = title;
+    lightbox.setAttribute('aria-label', title);
+    lightboxReturnFocus = opener;
+    document.body.classList.add('lightbox-open');
+    lightbox.classList.add('is-open');
+    lightboxClose.focus();
   }
 
   // ---- フッターの「To TOP」ボタン ----

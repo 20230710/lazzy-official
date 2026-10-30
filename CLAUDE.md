@@ -9,7 +9,7 @@ index.html        トップページ（Hero / Profile / Movie / Schedule / Guide
 guideline.html    ガイドライン単独ページ（下層ページ扱い）
 css/style.css     全スタイル（このファイル1本のみ）
 js/script.js      ヘッダー制御・メニュー開閉・スクロール表示アニメーション
-images/           画像素材（hero.png がメインビジュアルの元画像）
+images/           画像素材（hero.webp がメインビジュアルの元画像）
 svg/              SVG素材置き場（ユーザーが直接ファイルを置くこともある）
 ```
 
@@ -24,7 +24,7 @@ svg/              SVG素材置き場（ユーザーが直接ファイルを置�
 
 ## 主要コンポーネントの構造メモ
 
-- **ヒーローセクション**: `.hero-art`（メインビジュアル）は `images/hero.png` を `object-fit: cover` でトリミング表示。位置は `top` / `width` / `aspect-ratio` で調整する。ページ読み込み時にフェードインするアニメーション（`hero-art-in` キーフレーム）が `both` フィルモードで常時適用されているため、後から `transform` を上書きしても反映されない（キーフレーム側を編集する必要がある）。
+- **ヒーローセクション**: `.hero-art`（メインビジュアル）は `images/hero.webp` を `object-fit: cover` でトリミング表示。位置は `top` / `width` / `aspect-ratio` で調整する。ページ読み込み時にフェードインするアニメーション（`hero-art-in` キーフレーム）が `both` フィルモードで常時適用されているため、後から `transform` を上書きしても反映されない（キーフレーム側を編集する必要がある）。
 - **ヘッダーのナビ／ハンバーガー**: `#navToggle` ボタンは意図的に `<header>` の**外**（bodyの直下）に置いてある。理由: `.site-header` が `position: fixed` + `z-index` を持つため独自のstacking contextを作ってしまい、中に入れると開いたフルスクリーンメニュー（`z-index:200`）より奥に埋もれてしまう不具合があった。ボタンの表示/非表示は `display` ではなく `opacity` + `pointer-events` の切り替えでアニメーションさせている（スクロールでのナビ⇔ハンバーガー切り替えを滑らかにするため）。
 - **フルスクリーンメニュー**: ハンバーガー1つで開閉両方を兼用（開くボタンと閉じるボタンが別々だった時期があったが統合した）。
 - **フッター**: 高さ固定240px、左に「ロゴ＋SNSアイコン」、右に「ナビ→サブリンク→コピーライト」を`justify-content:space-between`で配置する2カラム構成。

@@ -112,7 +112,8 @@ h1, h2, h3 { margin: 0; }
 .center { text-align: center; }
 
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+.yt:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
 }
@@ -120,8 +121,6 @@ button:focus-visible {
 /* ---------- 星アイコン（MVの星と同じ「✦」の文字で描く。大きさは各所の font-size で調整） ---------- */
 .section-title.starred::before,
 .section-title.starred::after,
-.section-divider::before,
-.section-divider::after,
 .sub-heading::before,
 .btn-more::after,
 .num-star::before,
@@ -148,7 +147,7 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   font-family: var(--font-heading);
   font-weight: 400;
   font-size: 40px;
@@ -226,26 +225,16 @@ button:focus-visible {
 }
 .section-ivory .section-lead { color: var(--color-text-muted-dark); }
 
-/* ---------- 区切り線（両端に星） ---------- */
+/* ---------- 区切り線（中央が一番濃く、両端に向かって透明になる） ---------- */
 .section-divider {
   --divider-rgb: var(--color-white-rgb);
   position: relative;
   max-width: 762px;
   height: 27px;
   margin: 40px auto 0;
-  background: linear-gradient(rgba(var(--divider-rgb), 0.5), rgba(var(--divider-rgb), 0.5)) center / calc(100% - 62px) 1px no-repeat;
+  background: linear-gradient(90deg, rgba(var(--divider-rgb), 0), rgba(var(--divider-rgb), 0.5) 50%, rgba(var(--divider-rgb), 0)) center / 100% 1px no-repeat;
 }
 .section-ivory .section-divider { --divider-rgb: var(--color-hero-navy-rgb); }
-.section-divider::before,
-.section-divider::after {
-  position: absolute;
-  top: 0;
-  width: 27px;
-  height: 27px;
-  font-size: 24px;
-}
-.section-divider::before { left: 0; }
-.section-divider::after { right: 0; }
 
 /* ---------- 小見出し（星＋テキスト） ---------- */
 .sub-heading {
@@ -298,7 +287,21 @@ button:focus-visible {
   letter-spacing: 0.06em;
   color: var(--color-text-muted);
   margin-top: 2px;
+  transition: color .3s ease;
 }
+/* 明るい背景の上に来たら紺色のロゴに切り替える（is-on-light は js/script.js が付ける） */
+.site-header .logo-lockup { position: relative; }
+.site-header .logo-img { transition: opacity .3s ease; }
+.site-header .logo-img-dark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  mix-blend-mode: normal;
+  opacity: 0;
+}
+.site-header.is-on-light .logo-img { opacity: 0; }
+.site-header.is-on-light .logo-img-dark { opacity: 1; }
+.site-header.is-on-light .logo-sub { color: var(--color-text-dark); }
 .main-nav {
   display: flex;
   flex-direction: column;
@@ -734,7 +737,7 @@ body.content-revealed .hero-inner {
 /* ---------- セクション共通（ネイビー／アイボリー） ---------- */
 .section {
   position: relative;
-  padding: 80px 0;
+  padding: 160px 0;
   /* 横方向だけはみ出しを切る（縦は隣のセクションへ光がなめらかにつながるように見せる）。
      clip はスクロールコンテナを作らないので、中の position: sticky も効く */
   overflow-x: clip;
@@ -789,7 +792,6 @@ body::after {
   background: var(--color-ivory);
   color: var(--color-text-dark);
 }
-#profile { padding-top: 160px; }
 
 /* 背景の大きな英字（左右中央。高さはセクションごとに top で指定） */
 .section-watermark {
@@ -811,11 +813,11 @@ body::after {
   mask-image: linear-gradient(to bottom, var(--color-black) 20%, transparent 85%);
 }
 .section-ivory .section-watermark { color: rgba(var(--color-hero-navy-rgb), 0.06); }
-#movie .section-watermark { top: -56px; }
-#schedule .section-watermark { top: -56px; }
-#guideline .section-watermark { top: -55px; }
-#works .section-watermark { top: -54px; }
-#creators .section-watermark { top: -55px; }
+#movie .section-watermark { top: 24px; }
+#schedule .section-watermark { top: 24px; }
+#guideline .section-watermark { top: 25px; }
+#works .section-watermark { top: 26px; }
+#creators .section-watermark { top: 25px; }
 
 /* 流れ星（ヒーローと同じアニメーションをセクション内の別の位置で使う） */
 /* opacity はアニメーションが使うので、線の色の濃さで背景の星と同じだけ薄くする */
@@ -877,7 +879,6 @@ body::after {
   overflow: hidden;
   width: 283px;
   height: 227px;
-  background: var(--color-hero-navy);
 }
 .member-photo img {
   position: absolute;
@@ -900,6 +901,8 @@ body::after {
   flex: 0 1 400px;
   display: flex;
   flex-direction: column;
+  /* アイコンと高さをそろえる：名前は上端、ボタンは下端に合わせ、紹介文はその間 */
+  justify-content: space-between;
   gap: 24px;
 }
 
@@ -969,15 +972,38 @@ body::after {
   font-weight: 400;
   font-size: 16px;
   line-height: 1.45;
-  transition: filter .2s ease, transform .2s ease;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform .2s ease;
 }
 .btn-more::after {
   flex: 0 0 auto;
   width: 18px;
   height: 18px;
   font-size: 15px;
+  transition: transform .6s ease;
 }
-.btn-more:hover { filter: brightness(1.06); transform: translateY(-1px); }
+/* ホバー時：斜めの光沢が左から右へ横切る（キラッ） */
+.btn-more::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(var(--color-white-rgb), 0), rgba(var(--color-white-rgb), 0.6), rgba(var(--color-white-rgb), 0));
+  transform: translateX(-150%) skewX(-20deg);
+  pointer-events: none;
+}
+.btn-more:hover { transform: translateY(-1px); }
+.btn-more:hover::before {
+  transform: translateX(350%) skewX(-20deg);
+  transition: transform .7s ease;
+}
+/* ホバー時：星がくるんと一周 */
+.btn-more:hover::after { transform: rotate(360deg); }
 .btn-more-lg {
   margin-top: 40px;
   padding: 16px 32px;
@@ -1004,10 +1030,10 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   font-family: var(--font-heading);
   font-size: 16px;
-  margin: 0 0 6px;
+  margin: 0 0 8px;
 }
 .tags-label::before {
   width: 14px;
@@ -1040,51 +1066,136 @@ body::after {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin: 0;
 }
-.movie-thumb {
-  position: relative;
-  display: block;
-  aspect-ratio: 503 / 283;
-  border-radius: 8px;
-  overflow: hidden;
-  background: var(--color-hero-navy);
-}
-.movie-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform .4s ease;
-}
-.movie-link-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 40px;
-  height: 40px;
-  transform: translate(-50%, -50%);
-  background: url(../svg/external-link.svg) center / contain no-repeat;
-  filter: drop-shadow(0 0 6px rgba(var(--color-black-rgb), 0.35));
-}
-.movie-item:hover .movie-thumb img { transform: scale(1.04); }
+.movie-thumb { border-radius: 8px; }
 .movie-caption {
   font-size: 16px;
   font-weight: 400;
   line-height: 1.45;
 }
 
+/* ---------- YouTube（クリックするまでサムネイル＋再生ボタンだけを表示） ----------
+   HTMLは <div class="yt" data-url="YouTubeのURL" data-title="タイトル"></div> と書くだけ。
+   中身（サムネイル・再生ボタン・クリック後のプレーヤー）は js/script.js が作る */
+.yt {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-black);
+  cursor: pointer;
+}
+.yt img,
+.yt iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+/* hqdefault.jpg は4:3で上下に黒帯があるので、16:9の枠で切り落とす */
+.yt img {
+  object-fit: cover;
+  transition: transform .4s ease;
+}
+.yt:hover img { transform: scale(1.04); }
+.yt-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--gradient-gold);
+  box-shadow: 0 0 24px rgba(var(--color-black-rgb), 0.35);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: transform .25s ease;
+}
+/* 紺色の三角（見た目の中心に来るよう少し右へ） */
+.yt-play::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  border-style: solid;
+  border-width: 11px 0 11px 18px;
+  border-color: transparent transparent transparent var(--color-text-dark);
+  transform: translate(-50%, -50%);
+}
+.yt:hover .yt-play,
+.yt-play:focus-visible { transform: translate(-50%, -50%) scale(1.1); }
+
+/* class="yt yt-lightbox"：クリックしても再生せず、サムネイルを大きく表示する */
+.yt-lightbox { cursor: zoom-in; }
+
+/* ---------- サムネイルの拡大表示 ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: rgba(var(--color-navy-deep-rgb), 0.88);
+  cursor: zoom-out;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility 0s linear .3s;
+}
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .3s ease, visibility 0s linear 0s;
+}
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 40px rgba(var(--color-black-rgb), 0.5);
+  transform: scale(.96);
+  transition: transform .3s ease;
+}
+.lightbox.is-open .lightbox-img { transform: scale(1); }
+/* 右上の×ボタン */
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--color-ivory);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.lightbox-close:hover { background: rgba(var(--color-ivory-rgb), 0.15); }
+.lightbox-close::before,
+.lightbox-close::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 1.5px;
+  background: var(--color-ivory);
+}
+.lightbox-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.lightbox-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+body.lightbox-open { overflow: hidden; }
+
 /* ---------- スケジュール ---------- */
 .schedule-item + .schedule-item { margin-top: 24px; }
 .schedule-panel {
   border-radius: 8px;
   overflow: hidden;
-  background: var(--color-white);
-}
-.schedule-embed {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 800 / 450;
-  border: 0;
 }
 
 /* ---------- 配信ガイドライン ---------- */
@@ -1099,7 +1210,7 @@ body::after {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 .guideline-list > li {
   display: flex;
@@ -1159,7 +1270,7 @@ body::after {
 .guideline-list li.stacked .guideline-note { margin-left: 48px; }
 .guideline-sub {
   list-style: none;
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   padding: 0;
   color: var(--color-text-muted-dark);
   font-size: 14px;
@@ -1175,12 +1286,13 @@ body::after {
 }
 
 /* ---------- 活動実績 ---------- */
-#works { padding-bottom: 120px; }
+/* 下に重なるCREATORSの角丸（40px）の分だけ多めに取る */
+#works { padding-bottom: 200px; }
 .works-showcase {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 50px;
+  gap: 48px;
 }
 .works-visual {
   position: sticky;
@@ -1269,7 +1381,7 @@ body::after {
   display: grid;
   grid-template-columns: repeat(3, minmax(220px, auto));
   justify-content: center;
-  gap: 23px 24px;
+  gap: 24px;
 }
 .creators-item {
   display: flex;
@@ -1344,7 +1456,7 @@ body::after {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 .rule-list li {
   display: flex;
@@ -1355,11 +1467,10 @@ body::after {
   line-height: 1.45;
 }
 .rule-list li.stacked { display: block; }
-.rule-list li.stacked .guideline-sub { margin: 10px 0 0 48px; color: var(--color-text-muted); }
-.rule-list li.stacked .guideline-note-light { margin: 6px 0 0 48px; }
+.rule-list li.stacked .guideline-sub { margin: 8px 0 0 48px; color: var(--color-text-muted); }
+.rule-list li.stacked .guideline-note-light { margin: 8px 0 0 48px; }
 
 /* ---------- 下層ページ（MUSIC） ---------- */
-.music-page .section-title { margin-bottom: 24px; }
 .music-filter {
   display: flex;
   flex-wrap: wrap;
@@ -1453,15 +1564,15 @@ body::after {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding: 16px 6px;
+  padding: 16px 8px;
 }
 .music-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  padding: 8px 17px;
+  padding: 8px 16px;
   border: 1px solid rgba(var(--color-hero-navy-rgb), 0.6);
   border-radius: 32px;
   font-size: 24px;
@@ -1505,7 +1616,7 @@ body::after {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 10px;
+  gap: 8px;
 }
 .footer-nav {
   display: flex;
@@ -1548,7 +1659,7 @@ body::after {
 .footer-social {
   display: flex;
   gap: 16px;
-  margin-top: 10px;
+  margin-top: 8px;
   padding: 8px 0;
 }
 
@@ -1676,6 +1787,16 @@ body::after {
   .sp-break { display: block; }
 
   .section-title { font-size: 24px; gap: 6px; margin-bottom: 28px; }
+  /* 余白を8の倍数にそろえたのはPC版のみ。スマホ版は前の値のまま */
+  .guideline-list, .rule-list { gap: 20px; }
+  .guideline-sub { margin-top: 10px; }
+  .rule-list li.stacked .guideline-sub { margin-top: 10px; }
+  .rule-list li.stacked .guideline-note-light { margin-top: 6px; }
+  .tags-label { gap: 6px; margin-bottom: 6px; }
+  .music-info { padding: 16px 6px; }
+  .music-title { gap: 10px; padding: 8px 17px; }
+  .footer-links { gap: 10px; }
+  .footer-social { margin-top: 10px; }
   .section-title.starred::before,
   .section-title.starred::after {
     font-size: 14px;

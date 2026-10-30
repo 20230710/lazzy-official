@@ -16,11 +16,11 @@ window.scrollTo(0, 0);
 <meta property="og:site_name" content="Lazzy Official Website">
 <meta property="og:title" content="Lazzy｜Vsingerユニット公式サイト">
 <meta property="og:description" content="リアル幼馴染の音琴ういと子守うたりによるVsingerユニット「Lazzy」の公式サイトです。プロフィール、配信スケジュール、配信ガイドラインなどを掲載しています。">
-<meta property="og:image" content="images/url_image.png">
+<meta property="og:image" content="https://20230710.github.io/lazzy-official/images/url_image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Lazzy｜Vsingerユニット公式サイト">
 <meta name="twitter:description" content="リアル幼馴染の音琴ういと子守うたりによるVsingerユニット「Lazzy」の公式サイトです。プロフィール、配信スケジュール、配信ガイドラインなどを掲載しています。">
-<meta name="twitter:image" content="images/url_image.png">
+<meta name="twitter:image" content="https://20230710.github.io/lazzy-official/images/url_image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,6 +63,7 @@ window.scrollTo(0, 0);
   <div class="header-inner">
     <a href="#top" class="logo-lockup">
       <img src="images/logo.png" alt="Lazzy" class="logo-img">
+      <img src="images/logo-navy.png" alt="" class="logo-img logo-img-dark" aria-hidden="true">
       <span class="logo-sub">Lazzy Official Website</span>
     </a>
 
@@ -137,7 +138,7 @@ window.scrollTo(0, 0);
   <span class="hero-shooting-star hero-shooting-star-4" aria-hidden="true"></span>
 
   <div class="hero-art">
-    <img src="images/hero.png" alt="Lazzy お二人のイラスト">
+    <img src="images/hero.webp" alt="Lazzy お二人のイラスト">
   </div>
 
   <div class="hero-inner">
@@ -226,7 +227,7 @@ window.scrollTo(0, 0);
   <div class="section-inner" id="members">
     <div class="member-row reveal">
       <div class="member-photo">
-        <img src="images/member-ui.png" alt="音琴ういのアイコン">
+        <img src="images/member-ui.webp" alt="音琴ういのアイコン">
       </div>
       <div class="member-info">
         <h3 class="member-name">音琴うい<span class="member-name-en">Negoto Ui</span></h3>
@@ -253,7 +254,7 @@ window.scrollTo(0, 0);
 
     <div class="member-row member-row-reverse reveal">
       <div class="member-photo">
-        <img src="images/member-utari.png" alt="子守うたりのアイコン">
+        <img src="images/member-utari.webp" alt="子守うたりのアイコン">
       </div>
       <div class="member-info">
         <h3 class="member-name">子守うたり<span class="member-name-en">Komori Utari</span></h3>
@@ -285,7 +286,6 @@ window.scrollTo(0, 0);
 
   <!-- ================= タグ ================= -->
   <div class="section-inner center" id="tags">
-    <h3 class="section-title starred">TAGS</h3>
     <ul class="tags-list reveal-stagger">
       <li class="tags-item reveal-item">
         <p class="tags-label">ALL</p>
@@ -323,36 +323,26 @@ window.scrollTo(0, 0);
     <div class="movie-panel">
       <h2 class="section-title starred center dark">MOVIE</h2>
 
-      <!-- 動画を追加する場合は <a class="movie-item reveal-item">〜</a> をコピーし、2か所の動画ID（watch?v= と /vi/ の後ろ）を差し替えてください -->
+      <!-- 動画を追加する場合は <figure class="movie-item reveal-item">〜</figure> をコピーし、
+           data-url にYouTubeのURL（watch?v= / youtu.be/ / shorts/ / embed/ のどれでも、動画IDだけでもOK）、
+           data-title とその下の文字に動画のタイトルを書いてください。サムネイルは自動で表示されます -->
       <div class="movie-grid reveal-stagger">
-        <a class="movie-item reveal-item" href="https://www.youtube.com/watch?v=5AnvTeGNXu4" target="_blank" rel="noopener">
-          <span class="movie-thumb">
-            <img src="https://i.ytimg.com/vi/5AnvTeGNXu4/hqdefault.jpg" alt="" loading="lazy">
-            <span class="movie-link-icon" aria-hidden="true"></span>
-          </span>
-          <span class="movie-caption">ティザーPV</span>
-        </a>
-        <a class="movie-item reveal-item" href="https://www.youtube.com/watch?v=IQeiJBt354U" target="_blank" rel="noopener">
-          <span class="movie-thumb">
-            <img src="https://i.ytimg.com/vi/IQeiJBt354U/hqdefault.jpg" alt="" loading="lazy">
-            <span class="movie-link-icon" aria-hidden="true"></span>
-          </span>
-          <span class="movie-caption">【オリジナル曲】星屑逃飛行 / Lazzy</span>
-        </a>
-        <a class="movie-item reveal-item" href="https://www.youtube.com/watch?v=AQp7BHHLCIY" target="_blank" rel="noopener">
-          <span class="movie-thumb">
-            <img src="https://i.ytimg.com/vi/AQp7BHHLCIY/hqdefault.jpg" alt="" loading="lazy">
-            <span class="movie-link-icon" aria-hidden="true"></span>
-          </span>
-          <span class="movie-caption">【歌ってみた】ヒッチコック / ヨルシカ</span>
-        </a>
-        <a class="movie-item reveal-item" href="https://www.youtube.com/watch?v=Fm7l1RtjXK8" target="_blank" rel="noopener">
-          <span class="movie-thumb">
-            <img src="https://i.ytimg.com/vi/Fm7l1RtjXK8/hqdefault.jpg" alt="" loading="lazy">
-            <span class="movie-link-icon" aria-hidden="true"></span>
-          </span>
-          <span class="movie-caption">れいじーのいじーらぢお</span>
-        </a>
+        <figure class="movie-item reveal-item">
+          <div class="yt movie-thumb" data-url="https://youtu.be/3zMKigZ-dc0" data-title="ティザーPV"></div>
+          <figcaption class="movie-caption">ティザーPV</figcaption>
+        </figure>
+        <figure class="movie-item reveal-item">
+          <div class="yt movie-thumb" data-url="https://www.youtube.com/watch?v=IQeiJBt354U" data-title="【オリジナル曲】星屑逃飛行 / Lazzy"></div>
+          <figcaption class="movie-caption">【オリジナル曲】星屑逃飛行 / Lazzy</figcaption>
+        </figure>
+        <figure class="movie-item reveal-item">
+          <div class="yt movie-thumb" data-url="https://www.youtube.com/watch?v=AQp7BHHLCIY" data-title="【歌ってみた】ヒッチコック / ヨルシカ"></div>
+          <figcaption class="movie-caption">【歌ってみた】ヒッチコック / ヨルシカ</figcaption>
+        </figure>
+        <figure class="movie-item reveal-item">
+          <div class="yt movie-thumb" data-url="https://youtu.be/ItoUWxq-yO0" data-title="【歌ってみた】LAZY / DUSTCELL"></div>
+          <figcaption class="movie-caption">【歌ってみた】LAZY / DUSTCELL</figcaption>
+        </figure>
       </div>
 
       <div class="center">
@@ -377,15 +367,13 @@ window.scrollTo(0, 0);
     <div class="schedule-item reveal">
       <h3 class="sub-heading">週間スケジュール</h3>
       <div class="schedule-panel">
-        <iframe class="schedule-embed" src="https://www.youtube-nocookie.com/embed/kSiMOkfpaxQ?controls=0&modestbranding=1" title="週間スケジュール" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div class="yt yt-lightbox" data-url="https://youtu.be/kSiMOkfpaxQ" data-title="週間スケジュール"></div>
       </div>
     </div>
     <div class="schedule-item reveal">
       <h3 class="sub-heading">告知・宣伝</h3>
       <div class="schedule-panel">
-        <iframe class="schedule-embed" src="https://www.youtube-nocookie.com/embed/1lvetdg2sME?controls=0&modestbranding=1" title="告知・宣伝" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div class="yt yt-lightbox" data-url="https://youtu.be/1lvetdg2sME" data-title="告知・宣伝"></div>
       </div>
     </div>
     <div class="section-divider" aria-hidden="true"></div>
