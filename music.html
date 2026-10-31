@@ -48,7 +48,6 @@
   <nav class="menu-overlay-nav">
     <a href="index.html#top">Top</a>
     <a href="index.html#profile">Profile</a>
-    <a href="index.html#tags">Tags</a>
     <a href="index.html#movie">Movie</a>
     <a href="index.html#schedule">Schedule</a>
     <a href="index.html#guideline">Guideline</a>
@@ -86,7 +85,13 @@
 
   <div class="section-inner center">
     <h1 class="section-title starred">MUSIC</h1>
-    <p class="section-lead reveal">Lazzyの楽曲を聴くことができます</p>
+    <p class="section-lead reveal">Lazzyのオリジナル楽曲とカバー曲を聴くことができます</p>
+
+    <!-- PICK UP：下の曲一覧から、ページを開くたびに1曲をランダムに表示する（js/script.js） -->
+    <div class="music-pickup" id="musicPickup" hidden>
+      <h2 class="sub-heading">PICK UP</h2>
+      <div class="yt yt-no-button music-pickup-video"></div>
+    </div>
 
     <div class="music-filter reveal" role="group" aria-label="歌っている人で絞り込み">
       <button type="button" class="is-active" data-filter="all" aria-pressed="true">ALL</button>
@@ -97,26 +102,184 @@
   </div>
 
   <!-- 曲を追加する場合は <li class="music-card">〜</li> をコピーし、
-       data-artist（lazzy / ui / utari）、2か所の動画ID（watch?v= と /vi/ の後ろ）、曲名、歌っている人を書き換えてください -->
+       data-artist（歌っている人：lazzy / ui / utari）、data-url にYouTubeのURL、data-title と曲名、元のアーティスト名を書き換えてください。
+       サムネイルと再生ボタンは自動で表示されます -->
   <div class="music-carousel reveal">
     <ul class="music-list">
       <li class="music-card" data-artist="lazzy">
-        <a href="https://www.youtube.com/watch?v=IQeiJBt354U" target="_blank" rel="noopener">
-          <span class="music-thumb"><img src="https://i.ytimg.com/vi/IQeiJBt354U/hqdefault.jpg" alt="" loading="lazy"></span>
-          <span class="music-info">
-            <span class="music-title">星屑逃飛行</span>
-            <span class="music-artist">Lazzy</span>
-          </span>
-        </a>
+        <div class="yt music-thumb" data-url="https://youtu.be/IQeiJBt354U" data-title="星屑逃飛行"></div>
+        <div class="music-info">
+          <span class="music-title">星屑逃飛行</span>
+          <span class="music-artist">Lazzy</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="utari">
+        <div class="yt music-thumb" data-url="https://youtu.be/2oD9RyZ85yY" data-title="GLAMOROUS SKY"></div>
+        <div class="music-info">
+          <span class="music-title">GLAMOROUS SKY</span>
+          <span class="music-artist">中島美嘉</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="utari">
+        <div class="yt music-thumb" data-url="https://youtu.be/tVLmIdalH5g" data-title="チェリーポップ"></div>
+        <div class="music-info">
+          <span class="music-title">チェリーポップ</span>
+          <span class="music-artist">DECO*27</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="ui">
+        <div class="yt music-thumb" data-url="https://youtu.be/Kz-6VnJNy0w" data-title="心拍数＃0822"></div>
+        <div class="music-info">
+          <span class="music-title">心拍数＃0822</span>
+          <span class="music-artist">蝶々P</span>
+        </div>
       </li>
       <li class="music-card" data-artist="lazzy">
-        <a href="https://www.youtube.com/watch?v=AQp7BHHLCIY" target="_blank" rel="noopener">
-          <span class="music-thumb"><img src="https://i.ytimg.com/vi/AQp7BHHLCIY/hqdefault.jpg" alt="" loading="lazy"></span>
-          <span class="music-info">
-            <span class="music-title">ヒッチコック</span>
-            <span class="music-artist">Lazzy</span>
-          </span>
-        </a>
+        <div class="yt music-thumb" data-url="https://youtu.be/9xTH6UKB-9Q" data-title="ひたむきシンデレラ!"></div>
+        <div class="music-info">
+          <span class="music-title">ひたむきシンデレラ!</span>
+          <span class="music-artist">CUTIE STREET</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="lazzy">
+        <div class="yt music-thumb" data-url="https://youtu.be/ItoUWxq-yO0" data-title="LAZY"></div>
+        <div class="music-info">
+          <span class="music-title">LAZY</span>
+          <span class="music-artist">DUSTCELL</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="utari">
+        <div class="yt music-thumb" data-url="https://youtu.be/dOC0LzXRzbM" data-title="アンビバレント"></div>
+        <div class="music-info">
+          <span class="music-title">アンビバレント</span>
+          <span class="music-artist">Uru</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="lazzy">
+        <div class="yt music-thumb" data-url="https://youtu.be/zZbGRge29j0" data-title="彼氏自慢"></div>
+        <div class="music-info">
+          <span class="music-title">彼氏自慢</span>
+          <span class="music-artist">HoneyWorks</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="ui">
+        <div class="yt music-thumb" data-url="https://youtu.be/kDpRCUhsqCQ" data-title="Twinkle Days"></div>
+        <div class="music-info">
+          <span class="music-title">Twinkle Days</span>
+          <span class="music-artist">19's Sound Factory</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="lazzy">
+        <div class="yt music-thumb" data-url="https://youtu.be/6GF_NmFNVwM" data-title="ガールズトーク"></div>
+        <div class="music-info">
+          <span class="music-title">ガールズトーク</span>
+          <span class="music-artist">れるりり</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="lazzy">
+        <div class="yt music-thumb" data-url="https://youtu.be/AQp7BHHLCIY" data-title="ヒッチコック"></div>
+        <div class="music-info">
+          <span class="music-title">ヒッチコック</span>
+          <span class="music-artist">ヨルシカ</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="utari">
+        <div class="yt music-thumb" data-url="https://youtu.be/MAHuhBgGS38" data-title="怪獣の花唄"></div>
+        <div class="music-info">
+          <span class="music-title">怪獣の花唄</span>
+          <span class="music-artist">Vaundy</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="ui">
+        <div class="yt music-thumb" data-url="https://youtu.be/_aQLEOMiG_E" data-title="君の脈で踊りたかった"></div>
+        <div class="music-info">
+          <span class="music-title">君の脈で踊りたかった</span>
+          <span class="music-artist">Picon</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="ui">
+        <div class="yt music-thumb" data-url="https://youtu.be/-T3oUVGWtZc" data-title="ハナタバ"></div>
+        <div class="music-info">
+          <span class="music-title">ハナタバ</span>
+          <span class="music-artist">MIMI</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="lazzy">
+        <div class="yt music-thumb" data-url="https://youtu.be/MA-yZJtjdSM" data-title="キミペディア"></div>
+        <div class="music-info">
+          <span class="music-title">キミペディア</span>
+          <span class="music-artist">Junky</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="ui">
+        <div class="yt music-thumb" data-url="https://youtu.be/1UfrAvhqYK4" data-title="ダーリン"></div>
+        <div class="music-info">
+          <span class="music-title">ダーリン</span>
+          <span class="music-artist">須田景凪</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="utari">
+        <div class="yt music-thumb" data-url="https://youtu.be/aftwhuajkAo" data-title="クラクラ"></div>
+        <div class="music-info">
+          <span class="music-title">クラクラ</span>
+          <span class="music-artist">Ado</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="utari">
+        <div class="yt music-thumb" data-url="https://youtu.be/DuBACVWaEMc" data-title="Booo!"></div>
+        <div class="music-info">
+          <span class="music-title">Booo!</span>
+          <span class="music-artist">TOKOTOKO（西沢さんP）</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="lazzy">
+        <div class="yt music-thumb" data-url="https://youtu.be/9nTPQdl-r48" data-title="セカイはまだ始まってすらいない"></div>
+        <div class="music-info">
+          <span class="music-title">セカイはまだ始まってすらいない</span>
+          <span class="music-artist">ピノキオピー</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="utari">
+        <div class="yt music-thumb" data-url="https://youtu.be/JY2PNhS96J4" data-title="陽キャJKに憧れる陰キャJKの歌"></div>
+        <div class="music-info">
+          <span class="music-title">陽キャJKに憧れる陰キャJKの歌</span>
+          <span class="music-artist">音莉飴</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="ui">
+        <div class="yt music-thumb" data-url="https://youtu.be/3gAZr6lgypQ" data-title="少女レイ"></div>
+        <div class="music-info">
+          <span class="music-title">少女レイ</span>
+          <span class="music-artist">みきとP</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="ui">
+        <div class="yt music-thumb" data-url="https://youtu.be/xEoBbBmO6o0" data-title="とても素敵な六月でした"></div>
+        <div class="music-info">
+          <span class="music-title">とても素敵な六月でした</span>
+          <span class="music-artist">Eight</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="lazzy">
+        <div class="yt music-thumb" data-url="https://youtu.be/_LpzjzqrU0c" data-title="ロウワー"></div>
+        <div class="music-info">
+          <span class="music-title">ロウワー</span>
+          <span class="music-artist">ぬゆり</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="ui">
+        <div class="yt music-thumb" data-url="https://youtu.be/q-1IyoAAmD4" data-title="メランコリック"></div>
+        <div class="music-info">
+          <span class="music-title">メランコリック</span>
+          <span class="music-artist">Junky</span>
+        </div>
+      </li>
+      <li class="music-card" data-artist="utari">
+        <div class="yt music-thumb" data-url="https://youtu.be/-_5q2GQodqk" data-title="さよならプリンセス"></div>
+        <div class="music-info">
+          <span class="music-title">さよならプリンセス</span>
+          <span class="music-artist">Kai</span>
+        </div>
       </li>
     </ul>
   </div>
@@ -182,7 +345,6 @@
       <div class="footer-links">
         <nav class="footer-nav">
           <a href="index.html#profile">Profile</a>
-          <a href="index.html#tags">Tags</a>
           <a href="index.html#movie">Movie</a>
           <a href="index.html#schedule">Schedule</a>
           <a href="index.html#guideline">Guideline</a>

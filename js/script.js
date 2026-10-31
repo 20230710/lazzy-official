@@ -111,12 +111,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // ---- YouTube：クリックするまではサムネイル＋再生ボタンだけを表示し、クリックしたらその場で再生 ----
   // HTMLの data-url には watch?v= / youtu.be/ / shorts/ / embed/ のどの形のURLでも、動画IDだけでも書ける
   // （再生が始まった後のYouTubeの表示は隠さない。上に何かをかぶせて隠すのは規約違反のため）
-  document.querySelectorAll('.yt').forEach(function (el) {
+  function setupYt(el) {
     var src = el.getAttribute('data-url') || el.getAttribute('data-id') || '';
     var match = src.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);
     var id = match ? match[1] : src.trim();
     var title = el.getAttribute('data-title') || '動画';
     if (!id) return;
+    el.style.cursor = '';
 
     // サムネイルは高画質から順に試す（maxres 1280×720 → sd 640×480 → hq 480×360）。
     // その画質がない動画では、YouTubeは 120×90 の灰色の画像を返すので、それを見たら次に切り替える
@@ -156,11 +157,28 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    var play = document.createElement('button');
-    play.type = 'button';
-    play.className = 'yt-play';
-    play.setAttribute('aria-label', title + 'を再生');
-    el.replaceChildren(thumb, play);
+    // class="yt yt-no-button" のときは再生ボタンを出さず、枠そのものをボタンとして扱う
+    // （キーボードでも選んで Enter / スペースで再生できるようにする）
+    var noButton = el.classList.contains('yt-no-button');
+    var onKey = function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        el.click();
+      }
+    };
+    if (noButton) {
+      el.replaceChildren(thumb);
+      el.tabIndex = 0;
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', title + 'を再生');
+      el.addEventListener('keydown', onKey);
+    } else {
+      var play = document.createElement('button');
+      play.type = 'button';
+      play.className = 'yt-play';
+      play.setAttribute('aria-label', title + 'を再生');
+      el.replaceChildren(thumb, play);
+    }
 
     el.addEventListener('click', function () {
       var player = document.createElement('iframe');
@@ -170,8 +188,15 @@ document.addEventListener('DOMContentLoaded', function () {
       player.allowFullscreen = true;
       el.replaceChildren(player);
       el.style.cursor = 'auto';
+      if (noButton) {
+        el.removeAttribute('tabindex');
+        el.removeAttribute('role');
+        el.removeAttribute('aria-label');
+        el.removeEventListener('keydown', onKey);
+      }
     }, { once: true });
-  });
+  }
+  document.querySelectorAll('.yt').forEach(setupYt);
 
   // ---- サムネイルの拡大表示（初めて開くときに作る。×ボタン・背景のクリック・Escで閉じる） ----
   var lightbox = null;
@@ -450,6 +475,48 @@ document.addEventListener('DOMContentLoaded', function () {
   var musicFilter = document.querySelector('.music-filter');
   if (musicFilter) {
     var musicCards = document.querySelectorAll('.music-card');
+    // 3枚目を真ん中にして、左右にカードが並んで見える位置から始める
+    var centerMusicCards = function () {
+      var carousel = document.querySelector('.music-carousel');
+      var visible = Array.prototype.filter.call(musicCards, function (card) { return !card.hidden; });
+      var target = visible[Math.min(2, visible.length - 1)];
+      if (target) carousel.scrollLeft = target.offsetLeft + target.offsetWidth / 2 - carousel.clientWidth / 2;
+    };
+    window.addEventListener('load', centerMusicCards);
+
+    // PICK UP：曲一覧からランダムに1曲を選んで表示する（ページを開くたびに変わる）
+    var musicPickup = document.getElementById('musicPickup');
+    if (musicPickup && musicCards.length) {
+      var pickedCard = musicCards[Math.floor(Math.random() * musicCards.length)];
+      var pickedVideo = pickedCard.querySelector('.yt');
+      var pickupVideo = musicPickup.querySelector('.yt');
+      pickupVideo.setAttribute('data-url', pickedVideo.getAttribute('data-url'));
+      pickupVideo.setAttribute('data-title', pickedVideo.getAttribute('data-title'));
+      setupYt(pickupVideo);
+      musicPickup.hidden = false;
+    }
+
+    // 曲名が1行に収まらないときだけ、文字を小さくして1行に収める
+    var fitMusicTitles = function () {
+      document.querySelectorAll('.music-title').forEach(function (title) {
+        if (title.closest('.music-card').hidden) return;
+        title.style.fontSize = '';
+        var style = getComputedStyle(title);
+        var before = getComputedStyle(title, '::before');
+        var after = getComputedStyle(title, '::after');
+        var range = document.createRange();
+        range.selectNodeContents(title);
+        var textWidth = range.getBoundingClientRect().width;
+        var available = title.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight) -
+          parseFloat(before.width) - parseFloat(after.width) - parseFloat(style.columnGap) * 2;
+        if (textWidth > available) {
+          title.style.fontSize = Math.floor(parseFloat(style.fontSize) * (available / textWidth) * 2) / 2 + 'px';
+        }
+      });
+    };
+    window.addEventListener('load', fitMusicTitles);
+    window.addEventListener('resize', fitMusicTitles);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitMusicTitles);
     musicFilter.querySelectorAll('button').forEach(function (button) {
       button.addEventListener('click', function () {
         var filter = button.getAttribute('data-filter');
@@ -459,7 +526,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         musicCards.forEach(function (card) {
           card.hidden = filter !== 'all' && card.getAttribute('data-artist') !== filter;
+          // 隠すカードで再生中の動画は止めて、サムネイルに戻す
+          var video = card.querySelector('.yt');
+          if (card.hidden && video.querySelector('iframe')) setupYt(video);
         });
+        fitMusicTitles();
+        centerMusicCards();
       });
     });
   }
@@ -493,13 +565,65 @@ document.addEventListener('DOMContentLoaded', function () {
       isPointerDown = false;
       musicCarousel.classList.remove('is-dragging');
     });
-    // ドラッグした直後のクリックではリンクを開かない
+    // ドラッグした直後のクリックでは動画を再生しない
     musicCarousel.addEventListener('click', function (e) {
       if (dragMoved) {
         e.preventDefault();
+        e.stopPropagation();
         dragMoved = false;
       }
     }, true);
+
+    // 操作がないときは一定時間ごとに次のカードへ進む（最後まで行ったら最初に戻る）
+    // 動画の再生中、ドラッグ中、キーボードで選択中、画面に見えていない間、別タブの間は進めない
+    var MUSIC_AUTO_MS = 4000;
+    var musicReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var musicAutoTimer = null;
+
+    var isMusicInView = function () {
+      var rect = musicCarousel.getBoundingClientRect();
+      var visible = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      return visible >= rect.height / 2;
+    };
+
+    var nextMusicCard = function () {
+      var cards = Array.prototype.filter.call(musicCarousel.querySelectorAll('.music-card'), function (card) {
+        return !card.hidden;
+      });
+      if (cards.length < 2) return;
+      var center = musicCarousel.scrollLeft + musicCarousel.clientWidth / 2;
+      var current = 0;
+      var closestDistance = Infinity;
+      cards.forEach(function (card, i) {
+        var distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          current = i;
+        }
+      });
+      var next = cards[(current + 1) % cards.length];
+      musicCarousel.scrollTo({
+        left: next.offsetLeft + next.offsetWidth / 2 - musicCarousel.clientWidth / 2,
+        behavior: 'smooth'
+      });
+    };
+
+    var scheduleMusicAuto = function () {
+      clearTimeout(musicAutoTimer);
+      if (musicReduceMotion.matches) return;
+      musicAutoTimer = setTimeout(function () {
+        var busy = isPointerDown || document.querySelector('.music-page iframe') ||
+          document.querySelector('.music-page :focus-visible');
+        if (!document.hidden && isMusicInView() && !busy) nextMusicCard();
+        scheduleMusicAuto();
+      }, MUSIC_AUTO_MS);
+    };
+
+    ['pointerdown', 'wheel', 'touchstart'].forEach(function (type) {
+      musicCarousel.addEventListener(type, scheduleMusicAuto, { passive: true });
+    });
+    if (musicFilter) musicFilter.addEventListener('click', scheduleMusicAuto);
+    scheduleMusicAuto();
   }
 });
 

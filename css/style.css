@@ -126,7 +126,6 @@ button:focus-visible,
 .works-item::before,
 .footer-totop-star::before,
 .creators-star::before,
-.tags-label::before,
 .music-title::before,
 .music-title::after {
   content: '✦';
@@ -418,8 +417,8 @@ button:focus-visible,
 .menu-overlay-nav a {
   font-family: var(--font-heading);
   font-weight: normal;
-  font-size: 40px;
-  line-height: 1.125;
+  font-size: 36px;
+  line-height: 1.11;
   color: var(--color-text-dark);
   opacity: 0;
   transform: translateX(24px);
@@ -1009,49 +1008,6 @@ body::after {
 }
 .btn-more-block { display: flex; width: 100%; }
 
-/* ---------- タグ（PROFILEセクション内） ---------- */
-#tags { margin-top: 40px; }
-.tags-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 32px 48px;
-}
-.tags-item {
-  flex: 0 1 160px;
-  text-align: center;
-}
-/* PC版：項目の幅を文字に合わせて、5つを1列に並べる */
-@media (min-width: 701px) {
-  #tags { max-width: 908px; }
-  .tags-item { flex: 0 0 auto; }
-}
-.tags-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-family: var(--font-heading);
-  font-size: 16px;
-  margin: 0 0 8px;
-}
-.tags-label::before {
-  width: 14px;
-  height: 14px;
-  font-size: 12px;
-  color: var(--color-hero-gold);
-}
-.tags-value {
-  font-size: 24px;
-  font-weight: 400;
-  line-height: 1.45;
-  color: var(--color-text-light);
-  margin: 0;
-}
-
 /* ---------- 動画パネル ---------- */
 .movie-panel {
   background: var(--color-ivory);
@@ -1451,7 +1407,8 @@ body.lightbox-open { overflow: hidden; }
   flex-direction: column;
   gap: 32px;
 }
-.guideline-block > .section-divider { margin-top: 8px; }
+/* 縦並び（flex）の中では margin: auto で幅が0になるので、幅を指定する */
+.guideline-block > .section-divider { width: 100%; margin-top: 8px; }
 .guideline-block + .guideline-block { margin-top: 40px; }
 .guideline-block p {
   font-size: 16px;
@@ -1488,6 +1445,13 @@ body.lightbox-open { overflow: hidden; }
 .rule-list li.stacked .guideline-note-light { margin: 8px 0 0 48px; }
 
 /* ---------- 下層ページ（MUSIC） ---------- */
+/* PICK UP（開くたびにランダムな1曲） */
+.music-pickup {
+  max-width: 640px;
+  margin: 40px auto 0;
+}
+.music-pickup-video { border-radius: 8px; }
+
 .music-filter {
   display: flex;
   flex-wrap: wrap;
@@ -1538,6 +1502,13 @@ body.lightbox-open { overflow: hidden; }
 .music-card {
   position: relative;
   flex: 0 0 315px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--color-ivory);
+  color: var(--color-text-dark);
   scroll-snap-align: center;
 }
 /* カードとカードの間の小さな丸 */
@@ -1552,36 +1523,14 @@ body.lightbox-open { overflow: hidden; }
   border-radius: 50%;
   background: var(--color-ivory);
 }
-.music-card a {
-  display: block;
-  padding: 16px;
-  border-radius: 8px;
-  background: var(--color-ivory);
-  color: var(--color-text-dark);
-  -webkit-user-drag: none;
-}
-.music-thumb {
-  display: block;
-  aspect-ratio: 1;
-  overflow: hidden;
-  background: var(--color-hero-navy);
-}
-.music-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-  /* YouTubeのサムネイル（4:3）は上下に黒帯があるので、拡大して帯を切り落とす */
-  transform: scale(1.34);
-  transition: transform .4s ease;
-}
-.music-card a:hover .music-thumb img { transform: scale(1.4); }
+.music-thumb { border-radius: 8px; }
 .music-info {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
   gap: 8px;
-  padding: 16px 8px;
+  padding: 16px 0 0;
 }
 .music-title {
   display: flex;
@@ -1589,13 +1538,16 @@ body.lightbox-open { overflow: hidden; }
   justify-content: center;
   gap: 8px;
   width: 100%;
+  min-height: 44px;
   padding: 8px 16px;
   border: 1px solid rgba(var(--color-hero-navy-rgb), 0.6);
   border-radius: 32px;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 1.45;
   text-align: center;
+  /* 1行に収める（長い曲名は js/script.js が文字を小さくする） */
+  white-space: nowrap;
 }
 .music-title::before,
 .music-title::after {
@@ -1809,9 +1761,6 @@ body.lightbox-open { overflow: hidden; }
   .guideline-sub { margin-top: 10px; }
   .rule-list li.stacked .guideline-sub { margin-top: 10px; }
   .rule-list li.stacked .guideline-note-light { margin-top: 6px; }
-  .tags-label { gap: 6px; margin-bottom: 6px; }
-  .music-info { padding: 16px 6px; }
-  .music-title { gap: 10px; padding: 8px 17px; }
   .footer-links { gap: 10px; }
   .footer-social { margin-top: 10px; }
   .section-title.starred::before,
@@ -1858,8 +1807,6 @@ body.lightbox-open { overflow: hidden; }
   .member-info { flex-basis: auto; gap: 16px; }
   .member-actions { justify-content: center; }
 
-  .tags-value { font-size: 20px; }
-
   .works-item.is-active p { font-size: 20px; }
 
   .creators-list { gap: 20px 12px; }
@@ -1874,7 +1821,7 @@ body.lightbox-open { overflow: hidden; }
 
   .music-list { padding: 0 calc(50vw - 130px); }
   .music-card { flex-basis: 260px; }
-  .music-title { font-size: 20px; }
+  .music-title { min-height: 41px; padding: 8px; font-size: 16px; }
 
   .footer-inner { padding: 40px 24px 104px; }
   .footer-top { align-items: center; }
