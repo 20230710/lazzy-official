@@ -220,20 +220,34 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // ---- WORKS：画面の真ん中に一番近い項目を大きく表示し、左の画像を切り替える ----
+  // ---- WORKS ----
+  // PC版：左の画像は固定。右は選択中の項目を真ん中にして上下の3つだけを見せ、
+  //       ホイール・スワイプ・上下キー・クリックで1つずつ切り替える
+  // スマホ版：全項目を縦に並べ、画面の真ん中に一番近い項目を選択中にする
   var worksList = document.getElementById('worksList');
-  if (worksList) {
-    var worksItems = worksList.querySelectorAll('.works-item');
+  var worksWindow = document.getElementById('worksWindow');
+  if (worksList && worksWindow) {
+    var worksItems = Array.prototype.slice.call(worksList.querySelectorAll('.works-item'));
     var worksImg = document.querySelector('.works-visual-img');
     var worksPlaceholder = document.querySelector('.works-visual-placeholder');
-    var activeWorksItem = null;
+    var worksLink = document.querySelector('.works-link');
+    var worksDesktop = window.matchMedia('(min-width: 861px)');
+    var worksIndex = -1;
 
-    var setActiveWorksItem = function (item) {
-      if (item === activeWorksItem) return;
-      if (activeWorksItem) activeWorksItem.classList.remove('is-active');
-      item.classList.add('is-active');
-      activeWorksItem = item;
+    // 切り替えたときに一瞬空白にならないよう、画像を先に読み込んでおく
+    worksItems.forEach(function (item) {
+      var src = item.getAttribute('data-image');
+      if (src) new Image().src = src;
+    });
 
+    var markWorksItems = function (index) {
+      worksItems.forEach(function (item, i) {
+        item.classList.toggle('is-active', i === index);
+        item.classList.toggle('is-near', Math.abs(i - index) === 1);
+      });
+    };
+
+    var showWorksImage = function (item) {
       var src = item.getAttribute('data-image');
       if (src) {
         worksImg.src = src;
@@ -244,39 +258,192 @@ document.addEventListener('DOMContentLoaded', function () {
         worksImg.hidden = true;
         worksPlaceholder.hidden = false;
       }
+
+      var link = item.getAttribute('data-link');
+      worksLink.hidden = !link;
+      if (link) {
+        worksLink.href = link;
+        worksLink.setAttribute('aria-label', item.querySelector('p').textContent + 'の配信を見る');
+      }
+    };
+
+    // 指定した項目が選択中のときの、3つ分の高さと、その項目の中心の位置を測る
+    var measureWorks = function (index) {
+      markWorksItems(index);
+      var first = worksItems[Math.max(index - 1, 0)];
+      var last = worksItems[Math.min(index + 1, worksItems.length - 1)];
+      var active = worksItems[index];
+      return {
+        top: first.offsetTop,
+        bottom: last.offsetTop + last.offsetHeight,
+        center: active.offsetTop + active.offsetHeight / 2
+      };
+    };
+
+    // 窓の高さは「どの項目を選んでも3つが収まる高さ」に固定する
+    var worksWindowHeight = function () {
+      var halfHeight = 0;
+      worksItems.forEach(function (item, i) {
+        var m = measureWorks(i);
+        halfHeight = Math.max(halfHeight, m.center - m.top, m.bottom - m.center);
+      });
+      return Math.ceil(halfHeight * 2);
+    };
+
+    var setWorksIndex = function (index, animate) {
+      index = Math.max(0, Math.min(index, worksItems.length - 1));
+      var previous = worksIndex;
+      if (!worksDesktop.matches) {
+        worksIndex = index;
+        markWorksItems(index);
+        showWorksImage(worksItems[index]);
+        return;
+      }
+      // 大きさの変化が終わった後の位置を、アニメーションなしで先に測る
+      worksList.classList.add('no-anim');
+      var height = parseFloat(worksWindow.style.height) || worksWindowHeight();
+      var target = measureWorks(index);
+      if (animate && previous >= 0) markWorksItems(previous);
+      worksList.getBoundingClientRect();
+      worksList.classList.remove('no-anim');
+      if (!animate) worksList.getBoundingClientRect();
+      worksIndex = index;
+      markWorksItems(index);
+      worksWindow.style.height = height + 'px';
+      worksList.style.transform = 'translateY(' + Math.round(height / 2 - target.center) + 'px)';
+      showWorksImage(worksItems[index]);
+    };
+
+    // PC版とスマホ版の切り替え時、文字の読み込み後に位置を計算し直す
+    var layoutWorks = function () {
+      worksWindow.style.height = '';
+      worksList.style.transform = '';
+      if (worksDesktop.matches) {
+        worksList.classList.add('no-anim');
+        worksWindow.style.height = worksWindowHeight() + 'px';
+        worksList.classList.remove('no-anim');
+        setWorksIndex(worksIndex < 0 ? 1 : worksIndex, false);
+      } else {
+        updateWorksOnScroll();
+      }
     };
 
     var worksTicking = false;
-    var updateWorks = function () {
+    var updateWorksOnScroll = function () {
       worksTicking = false;
+      if (worksDesktop.matches) return;
       var center = window.innerHeight / 2;
-      var closest = worksItems[0];
+      var closest = 0;
       var closestDistance = Infinity;
-      worksItems.forEach(function (item) {
+      worksItems.forEach(function (item, i) {
         var rect = item.getBoundingClientRect();
         var distance = Math.abs(rect.top + rect.height / 2 - center);
         if (distance < closestDistance) {
           closestDistance = distance;
-          closest = item;
+          closest = i;
         }
       });
-      setActiveWorksItem(closest);
+      if (closest !== worksIndex) setWorksIndex(closest, true);
     };
     window.addEventListener('scroll', function () {
       if (!worksTicking) {
         worksTicking = true;
-        requestAnimationFrame(updateWorks);
+        requestAnimationFrame(updateWorksOnScroll);
       }
     }, { passive: true });
-    window.addEventListener('resize', updateWorks);
-    updateWorks();
 
-    // 項目をクリックしたら、その項目が画面の真ん中に来るようにスクロール
-    worksItems.forEach(function (item) {
+    // PC版：操作がないときは一定時間ごとに次の項目へ進む（最後まで行ったら最初に戻る）
+    // キーボードで選択中、画面に見えていない間、別タブの間は進めない
+    var WORKS_AUTO_MS = 4000;
+    var worksShowcase = worksList.closest('.works-showcase');
+    var worksReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var worksAutoTimer = null;
+
+    // WORKSが半分以上画面に見えているか
+    var isWorksInView = function () {
+      var rect = worksShowcase.getBoundingClientRect();
+      var visible = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      return visible >= rect.height / 2;
+    };
+
+    var scheduleWorksAuto = function () {
+      clearTimeout(worksAutoTimer);
+      if (!worksDesktop.matches || worksReduceMotion.matches) return;
+      worksAutoTimer = setTimeout(function () {
+        var focused = !!worksShowcase.querySelector(':focus-visible');
+        if (!document.hidden && isWorksInView() && !focused) {
+          setWorksIndex((worksIndex + 1) % worksItems.length, true);
+        }
+        scheduleWorksAuto();
+      }, WORKS_AUTO_MS);
+    };
+
+    // ホイール：端に着いたら止めず、そのままページがスクロールするようにする
+    var worksWheelTotal = 0;
+    var worksWheelLocked = false;
+    worksWindow.addEventListener('wheel', function (e) {
+      if (!worksDesktop.matches) return;
+      var direction = e.deltaY > 0 ? 1 : -1;
+      var next = worksIndex + direction;
+      if (next < 0 || next >= worksItems.length) return;
+      e.preventDefault();
+      if (worksWheelLocked) return;
+      worksWheelTotal += e.deltaY;
+      if (Math.abs(worksWheelTotal) < 40) return;
+      worksWheelTotal = 0;
+      worksWheelLocked = true;
+      setWorksIndex(next, true);
+      scheduleWorksAuto();
+      setTimeout(function () { worksWheelLocked = false; }, 450);
+    }, { passive: false });
+
+    // スワイプ（タブレットなど）
+    var worksTouchY = null;
+    worksWindow.addEventListener('touchstart', function (e) {
+      worksTouchY = e.touches[0].clientY;
+    }, { passive: true });
+    worksWindow.addEventListener('touchend', function (e) {
+      if (!worksDesktop.matches || worksTouchY === null) return;
+      var moved = worksTouchY - e.changedTouches[0].clientY;
+      worksTouchY = null;
+      if (Math.abs(moved) > 30) setWorksIndex(worksIndex + (moved > 0 ? 1 : -1), true);
+      scheduleWorksAuto();
+    }, { passive: true });
+
+    // 上下キー
+    worksWindow.addEventListener('keydown', function (e) {
+      if (!worksDesktop.matches) return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        var next = worksIndex + (e.key === 'ArrowDown' ? 1 : -1);
+        if (next < 0 || next >= worksItems.length) return;
+        e.preventDefault();
+        setWorksIndex(next, true);
+        scheduleWorksAuto();
+      }
+    });
+
+    // クリック：PC版はその項目を選択、スマホ版はその項目が画面の真ん中に来るようにスクロール
+    worksItems.forEach(function (item, i) {
       item.addEventListener('click', function () {
-        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (worksDesktop.matches) {
+          setWorksIndex(i, true);
+          scheduleWorksAuto();
+        } else {
+          item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       });
     });
+
+    worksDesktop.addEventListener('change', function () {
+      worksIndex = -1;
+      layoutWorks();
+      scheduleWorksAuto();
+    });
+    window.addEventListener('resize', layoutWorks);
+    window.addEventListener('load', layoutWorks);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutWorks);
+    layoutWorks();
+    scheduleWorksAuto();
   }
 
   // ---- MUSIC：絞り込みボタン ----

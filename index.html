@@ -261,7 +261,7 @@ window.scrollTo(0, 0);
         <p class="member-desc">
           前世はナマケモノ…?<br>
           歌って絵を描くマルチクリエイター<br>
-          昔の名残で家から出ないと体から葉っぱが生えてくる
+          家から出ない日が続くと体から葉っぱが生えてくる。
         </p>
         <div class="member-actions">
           <a class="btn-more" href="https://lit.link/utarikomori" target="_blank" rel="noopener">MORE</a>
@@ -294,6 +294,10 @@ window.scrollTo(0, 0);
       <li class="tags-item reveal-item">
         <p class="tags-label">ART</p>
         <p class="tags-value">#レージアム</p>
+      </li>
+      <li class="tags-item reveal-item">
+        <p class="tags-label">STREAM</p>
+        <p class="tags-value">#れいじーなう</p>
       </li>
       <li class="tags-item reveal-item">
         <p class="tags-label">FAN MARK</p>
@@ -389,6 +393,7 @@ window.scrollTo(0, 0);
   </div>
   <div class="section-inner guideline-inner">
     <div class="guideline-body">
+      <h3 class="sub-heading reveal">配信ルール</h3>
       <ol class="guideline-list reveal">
         <li><span class="num"><span class="num-inner"><span class="num-star"></span>1</span></span>お互いに尊重し合うこと</li>
         <li><span class="num"><span class="num-inner"><span class="num-star"></span>2</span></span>求めていない時の指示行為は控えること</li>
@@ -438,31 +443,35 @@ window.scrollTo(0, 0);
       <div class="works-visual">
         <img class="works-visual-img" src="" alt="" hidden>
         <img class="works-visual-placeholder" src="images/logo.png" alt="">
+        <a class="btn-more works-link" href="" target="_blank" rel="noopener" hidden>配信を見る</a>
       </div>
       <!-- 実績を追加する場合は <li class="works-item">〜</li> をコピーして追加してください。
-           data-image に画像のパス（例: images/works-2025-02.png）を入れると、その項目が真ん中に来たとき左に表示されます -->
-      <ul class="works-list" id="worksList">
-        <li class="works-item" data-image="">
-          <time>2025.02</time>
-          <p>AttendMe様「推しカード」販売</p>
-        </li>
-        <li class="works-item" data-image="">
-          <time>2025.05</time>
-          <p>Vup様 オンラインくじ販売</p>
-        </li>
-        <li class="works-item" data-image="">
-          <time>2026.01</time>
-          <p>V-Bar「Real」様リアルイベント開催</p>
-        </li>
-        <li class="works-item" data-image="">
-          <time>2026.01</time>
-          <p>AttendMe様『推しの護符』販売</p>
-        </li>
-        <li class="works-item" data-image="">
-          <time>2026.06</time>
-          <p>カラリア様 タイアップ配信実施</p>
-        </li>
-      </ul>
+           data-image に画像のパス（例: images/works-2025-02.png）を入れると、その項目を選んだとき左に表示されます。
+           data-link に配信のURLを入れると、画像の右下に「配信を見る」ボタンが出ます（空なら出ません） -->
+      <div class="works-window" id="worksWindow" tabindex="0" aria-label="活動実績の一覧。上下の矢印キーで切り替えできます">
+        <ul class="works-list" id="worksList">
+          <li class="works-item" data-image="">
+            <time>2025.02</time>
+            <p>AttendMe様「推しカード」販売</p>
+          </li>
+          <li class="works-item" data-image="images/works-online-kuji.webp" data-link="https://www.youtube.com/live/Qb5UlU25Op0">
+            <time>2025.05</time>
+            <p>Vup様 オンラインくじ販売</p>
+          </li>
+          <li class="works-item" data-image="images/works-real-event.webp" data-link="https://www.youtube.com/live/mijEGkRtveU">
+            <time>2026.01</time>
+            <p>V-Bar「Real」様リアルイベント開催</p>
+          </li>
+          <li class="works-item" data-image="">
+            <time>2026.01</time>
+            <p>AttendMe様『推しの護符』販売</p>
+          </li>
+          <li class="works-item" data-image="images/works-coloria.webp" data-link="https://www.youtube.com/live/vtlBZM8wAWE">
+            <time>2026.06</time>
+            <p>カラリア様 タイアップ配信実施</p>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="section-divider" aria-hidden="true"></div>
   </div>
@@ -481,7 +490,7 @@ window.scrollTo(0, 0);
         <span class="creators-star" aria-hidden="true"></span>
         <div>
           <p class="creators-role">Live2Dモデリング</p>
-          <p class="creators-name">藍眠ちよこ様</p>
+          <p class="creators-name">藍眠ちよこ 様</p>
         </div>
       </li>
       <li class="creators-item reveal-item">
@@ -494,22 +503,29 @@ window.scrollTo(0, 0);
       <li class="creators-item reveal-item">
         <span class="creators-star" aria-hidden="true"></span>
         <div>
+          <p class="creators-role">キービジュアル</p>
+          <p class="creators-name">ぷこね 様</p>
+        </div>
+      </li>
+      <li class="creators-item reveal-item">
+        <span class="creators-star" aria-hidden="true"></span>
+        <div>
           <p class="creators-role">OP/ED映像</p>
-          <p class="creators-name">murakami様</p>
+          <p class="creators-name">murakami 様</p>
         </div>
       </li>
       <li class="creators-item reveal-item">
         <span class="creators-star" aria-hidden="true"></span>
         <div>
           <p class="creators-role">背景素材・スケジュール</p>
-          <p class="creators-name">ツキシロ様</p>
+          <p class="creators-name">ツキシロ 様</p>
         </div>
       </li>
       <li class="creators-item reveal-item">
         <span class="creators-star" aria-hidden="true"></span>
         <div>
           <p class="creators-role">ロゴ</p>
-          <p class="creators-name">design桑様</p>
+          <p class="creators-name">design桑 様</p>
         </div>
       </li>
     </ul>

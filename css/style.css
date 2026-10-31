@@ -119,17 +119,16 @@ button:focus-visible,
 }
 
 /* ---------- 星アイコン（MVの星と同じ「✦」の文字で描く。大きさは各所の font-size で調整） ---------- */
-.section-title.starred::before,
-.section-title.starred::after,
 .sub-heading::before,
+.sub-heading::after,
 .btn-more::after,
 .num-star::before,
 .works-item::before,
 .footer-totop-star::before,
+.creators-star::before,
 .tags-label::before,
 .music-title::before,
-.music-title::after,
-.guideline-heading::before {
+.music-title::after {
   content: '✦';
   display: flex;
   align-items: center;
@@ -147,7 +146,7 @@ button:focus-visible,
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 16px;
   font-family: var(--font-heading);
   font-weight: 400;
   font-size: 40px;
@@ -163,20 +162,17 @@ button:focus-visible,
   transform: translateY(0);
 }
 
-/* 見出しの左右に星を3つずつ並べる */
+/* 見出しの左右の線（タイトル側がはっきりしていて、外側に向かって透明になる） */
 .section-title.starred::before,
 .section-title.starred::after {
-  content: '✦ ✦ ✦';
+  content: '';
   flex: 0 0 auto;
-  font-size: 24px;
-  word-spacing: 4px;
-  animation: title-twinkle 2.4s ease-in-out infinite alternate;
+  width: 120px;
+  height: 1px;
+  opacity: 0.7;
 }
-.section-title.starred::after { animation-delay: 1.2s; }
-@keyframes title-twinkle {
-  from { opacity: 0.6; }
-  to { opacity: 1; }
-}
+.section-title.starred::before { background: linear-gradient(90deg, transparent, currentColor); }
+.section-title.starred::after { background: linear-gradient(90deg, currentColor, transparent); }
 .section-title.starred.dark { color: var(--color-text-dark); }
 
 /* ---------- スクロール表示アニメーション（汎用） ---------- */
@@ -240,18 +236,20 @@ button:focus-visible,
 .sub-heading {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-family: var(--font-jp);
   font-weight: 400;
-  font-size: 32px;
-  line-height: 1.45;
-  margin: 0 0 8px;
-}
-.sub-heading::before {
-  flex: 0 0 27px;
-  width: 27px;
-  height: 27px;
   font-size: 24px;
+  line-height: 1.45;
+  margin: 0 0 24px;
+}
+.sub-heading::before,
+.sub-heading::after {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  font-size: 18px;
 }
 
 /* ---------- ヘッダー ---------- */
@@ -1026,6 +1024,11 @@ body::after {
   flex: 0 1 160px;
   text-align: center;
 }
+/* PC版：項目の幅を文字に合わせて、5つを1列に並べる */
+@media (min-width: 701px) {
+  #tags { max-width: 908px; }
+  .tags-item { flex: 0 0 auto; }
+}
 .tags-label {
   display: flex;
   align-items: center;
@@ -1290,13 +1293,12 @@ body.lightbox-open { overflow: hidden; }
 #works { padding-bottom: 200px; }
 .works-showcase {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   gap: 48px;
 }
 .works-visual {
-  position: sticky;
-  top: calc(50vh - 129px);
+  position: relative;
   flex: 0 0 460px;
   aspect-ratio: 460 / 258;
   border-radius: 8px;
@@ -1316,8 +1318,18 @@ body.lightbox-open { overflow: hidden; }
   mix-blend-mode: screen;
   opacity: 0.7;
 }
+/* 画像の右下の「配信を見る」ボタン */
+.works-visual .works-link {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+}
+.works-window { flex: 0 0 290px; }
+.works-window:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 8px;
+}
 .works-list {
-  flex: 0 0 290px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1325,7 +1337,21 @@ body.lightbox-open { overflow: hidden; }
   flex-direction: column;
   gap: 24px;
 }
-/* 画面の真ん中に来た項目（is-active）が金色で大きくなる */
+/* PC版：選択中の項目を真ん中に置き、その上下の3つだけを見せる（位置と高さは js/script.js が計算する） */
+@media (min-width: 861px) {
+  .works-list {
+    position: relative;
+    transition: transform .45s ease;
+  }
+  .works-list.no-anim,
+  .works-list.no-anim .works-item,
+  .works-list.no-anim .works-item p { transition: none; }
+  .works-item:not(.is-active):not(.is-near) {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+/* 選択中の項目（is-active）が金色で大きくなる */
 .works-item {
   position: relative;
   width: 282px;
@@ -1337,7 +1363,7 @@ body.lightbox-open { overflow: hidden; }
   font-weight: 400;
   line-height: 1.45;
   cursor: pointer;
-  transition: width .35s ease, padding .35s ease, background-color .35s ease, color .35s ease, box-shadow .35s ease;
+  transition: width .35s ease, padding .35s ease, background-color .35s ease, color .35s ease, box-shadow .35s ease, opacity .35s ease, visibility .35s ease;
 }
 .works-item time { display: block; }
 .works-item p {
@@ -1356,11 +1382,11 @@ body.lightbox-open { overflow: hidden; }
 .works-item::before {
   position: absolute;
   top: 50%;
-  left: -34px;
-  width: 34px;
-  height: 34px;
-  margin-top: -17px;
-  font-size: 30px;
+  left: -32px;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  font-size: 20px;
   color: var(--color-gold-shade);
   opacity: 0;
   transform: scale(.4);
@@ -1379,9 +1405,10 @@ body.lightbox-open { overflow: hidden; }
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(220px, auto));
+  /* 列の幅を文字に合わせて、右側に余計な空きができないようにする（全体が中央にそろう） */
+  grid-template-columns: repeat(3, max-content);
   justify-content: center;
-  gap: 24px;
+  gap: 24px 64px;
 }
 .creators-item {
   display: flex;
@@ -1389,12 +1416,15 @@ body.lightbox-open { overflow: hidden; }
   gap: 8px;
 }
 .creators-star {
-  flex: 0 0 40px;
-  width: 40px;
-  height: 42px;
-  background-color: var(--color-hero-gold);
-  -webkit-mask: var(--icon-sparkle) center / contain no-repeat;
-  mask: var(--icon-sparkle) center / contain no-repeat;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  color: var(--color-hero-gold);
+}
+.creators-star::before {
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
 }
 .creators-role {
   font-size: 16px;
@@ -1430,21 +1460,8 @@ body.lightbox-open { overflow: hidden; }
 }
 .guideline-block .rule-list + .guideline-note-light,
 .guideline-block p + p { margin-top: -24px; }
-.guideline-heading {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-jp);
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 1.45;
-}
-.guideline-heading::before {
-  flex: 0 0 27px;
-  font-size: 24px;
-  width: 27px;
-  height: 27px;
-}
+/* ブロック内の間隔（gap: 32px）を打ち消して、小見出しの下を24pxにする */
+.guideline-block .sub-heading { margin-bottom: -8px; }
 .guideline-block .guideline-note-light {
   color: var(--color-hero-gold);
   font-size: 14px;
@@ -1725,12 +1742,12 @@ body.lightbox-open { overflow: hidden; }
   .movie-panel { padding: 40px 24px; }
 
   .works-showcase { flex-direction: column; align-items: center; gap: 24px; }
-  .works-visual { position: relative; top: auto; flex: 0 0 auto; width: 100%; max-width: 460px; }
-  .works-list { flex: 0 0 auto; width: 100%; max-width: 460px; }
+  .works-visual { flex: 0 0 auto; width: 100%; max-width: 460px; }
+  .works-window { flex: 0 0 auto; width: 100%; max-width: 460px; }
   .works-item, .works-item.is-active { width: 100%; }
   .works-item::before { display: none; }
 
-  .creators-list { grid-template-columns: repeat(2, minmax(0, 220px)); }
+  .creators-list { grid-template-columns: repeat(2, minmax(0, max-content)); }
 }
 
 @media (max-width: 700px) {
@@ -1798,13 +1815,11 @@ body.lightbox-open { overflow: hidden; }
   .footer-links { gap: 10px; }
   .footer-social { margin-top: 10px; }
   .section-title.starred::before,
-  .section-title.starred::after {
-    font-size: 14px;
-    word-spacing: 0;
-  }
+  .section-title.starred::after { width: 56px; }
   .section-lead { font-size: 20px; }
-  .sub-heading, .guideline-heading { font-size: 22px; }
-  .sub-heading::before, .guideline-heading::before { flex-basis: 20px; width: 20px; height: 20px; font-size: 18px; }
+  .sub-heading { font-size: 22px; margin-bottom: 8px; }
+  .guideline-body .sub-heading { margin-bottom: 24px; }
+  .guideline-block .sub-heading { margin-bottom: 0; }
   .member-name { font-size: 24px; justify-content: center; }
   .section-divider { margin-top: 32px; }
 
@@ -1847,8 +1862,9 @@ body.lightbox-open { overflow: hidden; }
 
   .works-item.is-active p { font-size: 20px; }
 
-  .creators-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 12px; }
-  .creators-star { flex-basis: 28px; width: 28px; height: 30px; }
+  .creators-list { gap: 20px 12px; }
+  .creators-star { flex-basis: 28px; width: 28px; height: 28px; }
+  .creators-star::before { font-size: 24px; }
   .creators-role { font-size: 13px; }
   .creators-name { font-size: 18px; }
 
