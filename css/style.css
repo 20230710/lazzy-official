@@ -670,6 +670,8 @@ body.content-revealed .hero-inner {
   to   { opacity: 1; transform: translate(-50%, -50%); }
 }
 
+/* 改行するときは「もうひとつの日常」の前で改行する */
+.hero-tagline-phrase { display: inline-block; }
 .hero-tagline {
   font-family: var(--font-jp);
   font-weight: 400;
@@ -1734,7 +1736,8 @@ body.lightbox-open { overflow: hidden; }
   .hero-social { left: 16px; bottom: 16px; }
 
   .hero-inner { top: 150px; width: 84vw; max-width: 84vw; }
-  .hero-tagline { font-size: 19px; line-height: 1.7; }
+  /* 小さい画面でも「ここは、〜帰ってこられる」が1行に収まる大きさにする */
+  .hero-tagline { font-size: min(19px, 5.2vw); line-height: 1.7; }
 
   .section { padding: 64px 0; }
   #profile { padding-top: 88px; }
