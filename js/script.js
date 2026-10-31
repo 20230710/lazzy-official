@@ -26,14 +26,17 @@ document.addEventListener('DOMContentLoaded', function () {
     onScroll();
   }
 
-  // ---- ヘッダーのロゴが明るい背景（アイボリーのセクション・MOVIEの白いパネル）に重なったら紺色に切り替え ----
+  // ---- ヘッダーのロゴと固定のSNSアイコンが明るい背景（アイボリーのセクション・MOVIEの白いパネル）に重なったら紺色に切り替え ----
+  // SNSアイコンはフッターの上の帯に届いたら隠す（フッターにも同じアイコンがあるため）
   var headerLogo = header && header.querySelector('.logo-lockup');
   if (headerLogo) {
     var lightAreas = document.querySelectorAll('.section-ivory, .movie-panel');
+    var heroSocial = document.querySelector('.hero-social');
+    var footerMarquee = document.querySelector('.site-footer').previousElementSibling;
+    var socialFixed = window.matchMedia('(min-width: 1280px)');
     var logoTicking = false;
-    var updateLogoColor = function () {
-      logoTicking = false;
-      var r = headerLogo.getBoundingClientRect();
+    var isOnLight = function (element) {
+      var r = element.getBoundingClientRect();
       var x = r.left + r.width / 2;
       var y = r.top + r.height / 2;
       var onLight = false;
@@ -41,7 +44,17 @@ document.addEventListener('DOMContentLoaded', function () {
         var b = area.getBoundingClientRect();
         if (x >= b.left && x <= b.right && y >= b.top && y <= b.bottom) onLight = true;
       });
-      header.classList.toggle('is-on-light', onLight);
+      return onLight;
+    };
+    var updateLogoColor = function () {
+      logoTicking = false;
+      header.classList.toggle('is-on-light', isOnLight(headerLogo));
+      if (!heroSocial) return;
+      var pastFooter = heroSocial.getBoundingClientRect().bottom > footerMarquee.getBoundingClientRect().top;
+      heroSocial.classList.toggle('is-past-footer', socialFixed.matches && pastFooter);
+      heroSocial.querySelectorAll('a').forEach(function (link) {
+        link.classList.toggle('is-on-light', socialFixed.matches && isOnLight(link));
+      });
     };
     var requestLogoUpdate = function () {
       if (!logoTicking) {

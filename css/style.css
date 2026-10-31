@@ -697,12 +697,30 @@ body.content-revealed .hero-inner {
   border-radius: 50%;
   border: 1px solid var(--color-white);
   color: var(--color-white);
-  transition: background .2s ease, border-color .2s ease;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
 }
 .hero-social a svg { width: 28px; height: 28px; }
 .hero-social a:hover {
   background: rgba(var(--color-ivory-rgb), 0.1);
   border-color: var(--color-accent);
+}
+/* MOVIEのパネルの左に余白がある幅では、スクロールしても画面左下に残す
+   left は「パネルの左端（幅1110px）− アイコン幅56px − 間隔16px」を16〜40pxの範囲で取る */
+@media (min-width: 1280px) {
+  .hero-social {
+    position: fixed;
+    left: clamp(16px, calc((100vw - 1110px) / 2 - 72px), 40px);
+    z-index: 99;
+    transition: opacity .2s ease;
+  }
+  .hero-social.is-past-footer {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .hero-social a.is-on-light {
+    border-color: var(--color-text-dark);
+    color: var(--color-text-dark);
+  }
 }
 
 
