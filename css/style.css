@@ -1293,19 +1293,17 @@ body.lightbox-open { overflow: hidden; }
   flex-direction: column;
   gap: 24px;
 }
-/* PC版：選択中の項目を真ん中に置き、その上下の3つだけを見せる（位置と高さは js/script.js が計算する） */
-@media (min-width: 861px) {
-  .works-list {
-    position: relative;
-    transition: transform .45s ease;
-  }
-  .works-list.no-anim,
-  .works-list.no-anim .works-item,
-  .works-list.no-anim .works-item p { transition: none; }
-  .works-item:not(.is-active):not(.is-near) {
-    opacity: 0;
-    visibility: hidden;
-  }
+/* 選択中の項目を真ん中に置き、その上下の3つだけを見せる（位置と高さは js/script.js が計算する） */
+.works-list {
+  position: relative;
+  transition: transform .45s ease;
+}
+.works-list.no-anim,
+.works-list.no-anim .works-item,
+.works-list.no-anim .works-item p { transition: none; }
+.works-item:not(.is-active):not(.is-near) {
+  opacity: 0;
+  visibility: hidden;
 }
 /* 選択中の項目（is-active）が金色で大きくなる */
 .works-item {
@@ -1735,11 +1733,10 @@ body.lightbox-open { overflow: hidden; }
   #works .section-watermark,
   #creators .section-watermark {
     top: 0;
-    left: auto;
-    right: -12px;
-    transform: none;
     font-size: 88px;
   }
+  /* PROFILEはタイトルの上の余白が他より多いので、その分だけ英字を下げて重なり方をそろえる */
+  #profile .section-watermark { top: 24px; }
   /* 下層ページはタイトル上の余白が 88px 多い分、英字も同じだけ下げる（152 − 64） */
   .subpage-section .section-watermark { top: 88px; }
 
@@ -1747,7 +1744,8 @@ body.lightbox-open { overflow: hidden; }
   #profile .deco-sparkle-a        { top: 40px;   left: 10%; }
   #movie .deco-sparkle-a          { top: 22px;   left: 72%; }
   #movie .deco-sparkle-c          { bottom: 18px; left: 12%; }
-  #schedule .deco-sparkle-a       { top: 20px;   left: 16%; }
+  #schedule .deco-sparkle-a       { top: 20px;   left: 78%; }
+  #works .deco-sparkle-a          { display: block; top: 20px; left: 14%; }
   .guideline-page .deco-sparkle-a { top: 100px;  left: 76%; }
   .music-page .deco-sparkle-a     { top: 100px;  left: 12%; }
   .music-page .deco-sparkle-c     { bottom: 30px; left: 72%; }
@@ -1761,21 +1759,60 @@ body.lightbox-open { overflow: hidden; }
   .guideline-sub { margin-top: 10px; }
   .rule-list li.stacked .guideline-sub { margin-top: 10px; }
   .rule-list li.stacked .guideline-note-light { margin-top: 6px; }
-  .footer-links { gap: 10px; }
+  .guideline-list .num,
+  .rule-list .num {
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+  }
+  .guideline-list .num-inner,
+  .rule-list .num-inner {
+    width: 27px;
+    height: 27px;
+    font-size: 13px;
+    gap: 2px;
+  }
+  .num-star {
+    width: 9px;
+    height: 9px;
+  }
+  .num-star::before { font-size: 8px; }
+  /* サブリストの字下げは、番号アイコンの幅（32px）＋間隔（8px） */
+  .guideline-list li.stacked .guideline-sub,
+  .guideline-list li.stacked .guideline-note,
+  .rule-list li.stacked .guideline-sub,
+  .rule-list li.stacked .guideline-note-light { margin-left: 40px; }
   .footer-social { margin-top: 10px; }
   .section-title.starred::before,
   .section-title.starred::after { width: 56px; }
-  .section-lead { font-size: 20px; }
-  .sub-heading { font-size: 22px; margin-bottom: 8px; }
+  /* スマホの文字サイズ：本文14px、補足12px、小見出し16px */
+  .section-lead { font-size: 16px; }
+  .section-sublead,
+  .member-desc,
+  .movie-caption,
+  .guideline-list > li,
+  .rule-list li,
+  .guideline-block p,
+  .btn-more,
+  .music-filter button { font-size: 14px; }
+  .guideline-sub,
+  .rule-list .guideline-sub li { font-size: 13px; }
+  .member-name-en,
+  .guideline-note,
+  .guideline-block .guideline-note-light,
+  .works-item,
+  .music-artist { font-size: 12px; }
+  .works-item p { font-size: 14px; }
+  .sub-heading { font-size: 16px; margin-bottom: 8px; }
   .guideline-body .sub-heading { margin-bottom: 24px; }
   .guideline-block .sub-heading { margin-bottom: 0; }
-  .member-name { font-size: 24px; justify-content: center; }
+  .member-name { font-size: 20px; }
   .section-divider { margin-top: 32px; }
 
   .btn-more-lg {
     margin-top: 32px;
     padding: 12px 24px;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .hero-art {
@@ -1797,23 +1834,27 @@ body.lightbox-open { overflow: hidden; }
     object-fit: cover;
   }
 
+  /* イラストは中央、文章は左そろえ、SNSは左・MOREは右 */
   .member-row,
   .member-row-reverse {
     flex-direction: column;
     align-items: center;
-    text-align: center;
     gap: 20px;
   }
-  .member-info { flex-basis: auto; gap: 16px; }
-  .member-actions { justify-content: center; }
+  /* 枠を横いっぱいに広げ、肩や腕が左右で切れないように人物の中心を枠の中央に置く */
+  .member-photo { width: 100%; }
+  .member-row .member-photo img { left: calc(50% - 540px); }
+  .member-row-reverse .member-photo img { left: calc(50% - 483px); }
+  .member-info { flex-basis: auto; align-self: stretch; gap: 16px; }
+  .member-actions { flex-direction: row-reverse; }
 
-  .works-item.is-active p { font-size: 20px; }
+  .works-item.is-active p { font-size: 16px; }
 
   .creators-list { gap: 20px 12px; }
   .creators-star { flex-basis: 28px; width: 28px; height: 28px; }
-  .creators-star::before { font-size: 24px; }
-  .creators-role { font-size: 13px; }
-  .creators-name { font-size: 18px; }
+  .creators-star::before { font-size: 20px; }
+  .creators-role { font-size: 12px; }
+  .creators-name { font-size: 16px; }
 
   .menu-overlay { align-items: center; padding: 112px 24px 32px; }
   .menu-overlay-nav { align-items: center; }
@@ -1821,32 +1862,35 @@ body.lightbox-open { overflow: hidden; }
 
   .music-list { padding: 0 calc(50vw - 130px); }
   .music-card { flex-basis: 260px; }
-  .music-title { min-height: 41px; padding: 8px; font-size: 16px; }
+  .music-title { min-height: 41px; padding: 8px; font-size: 14px; }
 
   .footer-inner { padding: 40px 24px 104px; }
   .footer-top { align-items: center; }
+  .footer-logo .logo-img { height: 80px; }
   .footer-links { align-items: center; }
-  .footer-nav,
+  .footer-nav { display: none; }
+  /* 2列にして、上下の段でリンクの左端をそろえる */
   .footer-sub-links {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
     justify-content: center;
-    text-align: center;
+    font-size: 12px;
   }
-  .footer-nav { font-size: 20px; gap: 12px 24px; }
   .footer-social { justify-content: center; }
   .footer-totop { right: 24px; }
 }
 
 @media (max-width: 480px) {
-  .member-photo { width: 200px; height: 160px; }
+  .member-photo { height: 160px; }
   .member-row .member-photo img {
     top: -26.15px;
-    left: -258px;
+    left: calc(50% - 382px);
     width: 671.4px;
     height: 873.3px;
   }
   .member-row-reverse .member-photo img {
     top: -26.85px;
-    left: -233.9px;
+    left: calc(50% - 342px);
     width: 671.4px;
     height: 873.3px;
   }

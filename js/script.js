@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
           revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.25 });
+    }, { rootMargin: '0px 0px -15% 0px' }); // 要素の割合で判定すると、画面より大幅に背の高い要素が出てこなくなる
     revealTargets.forEach(function (target) {
       revealObserver.observe(target);
     });
@@ -246,9 +246,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ---- WORKS ----
-  // PC版：左の画像は固定。右は選択中の項目を真ん中にして上下の3つだけを見せ、
-  //       ホイール・スワイプ・上下キー・クリックで1つずつ切り替える
-  // スマホ版：全項目を縦に並べ、画面の真ん中に一番近い項目を選択中にする
+  // 画像は固定。リストは選択中の項目を真ん中にして上下の3つだけを見せ、
+  // ホイール・上下キー・クリック（タップ）で1つずつ切り替える。操作がなければ自動で進む
+  // スワイプはPC幅のみ（スマホはページの縦スクロールとぶつかるため）
   var worksList = document.getElementById('worksList');
   var worksWindow = document.getElementById('worksWindow');
   if (worksList && worksWindow) {
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var worksImg = document.querySelector('.works-visual-img');
     var worksPlaceholder = document.querySelector('.works-visual-placeholder');
     var worksLink = document.querySelector('.works-link');
-    var worksDesktop = window.matchMedia('(min-width: 861px)');
+    var worksSwipeEnabled = window.matchMedia('(min-width: 861px)');
     var worksIndex = -1;
 
     // 切り替えたときに一瞬空白にならないよう、画像を先に読み込んでおく
@@ -318,12 +318,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var setWorksIndex = function (index, animate) {
       index = Math.max(0, Math.min(index, worksItems.length - 1));
       var previous = worksIndex;
-      if (!worksDesktop.matches) {
-        worksIndex = index;
-        markWorksItems(index);
-        showWorksImage(worksItems[index]);
-        return;
-      }
       // 大きさの変化が終わった後の位置を、アニメーションなしで先に測る
       worksList.classList.add('no-anim');
       var height = parseFloat(worksWindow.style.height) || worksWindowHeight();
@@ -339,45 +333,17 @@ document.addEventListener('DOMContentLoaded', function () {
       showWorksImage(worksItems[index]);
     };
 
-    // PC版とスマホ版の切り替え時、文字の読み込み後に位置を計算し直す
+    // 画面幅が変わったとき、文字の読み込み後に位置を計算し直す
     var layoutWorks = function () {
       worksWindow.style.height = '';
       worksList.style.transform = '';
-      if (worksDesktop.matches) {
-        worksList.classList.add('no-anim');
-        worksWindow.style.height = worksWindowHeight() + 'px';
-        worksList.classList.remove('no-anim');
-        setWorksIndex(worksIndex < 0 ? 1 : worksIndex, false);
-      } else {
-        updateWorksOnScroll();
-      }
+      worksList.classList.add('no-anim');
+      worksWindow.style.height = worksWindowHeight() + 'px';
+      worksList.classList.remove('no-anim');
+      setWorksIndex(worksIndex < 0 ? 1 : worksIndex, false);
     };
 
-    var worksTicking = false;
-    var updateWorksOnScroll = function () {
-      worksTicking = false;
-      if (worksDesktop.matches) return;
-      var center = window.innerHeight / 2;
-      var closest = 0;
-      var closestDistance = Infinity;
-      worksItems.forEach(function (item, i) {
-        var rect = item.getBoundingClientRect();
-        var distance = Math.abs(rect.top + rect.height / 2 - center);
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closest = i;
-        }
-      });
-      if (closest !== worksIndex) setWorksIndex(closest, true);
-    };
-    window.addEventListener('scroll', function () {
-      if (!worksTicking) {
-        worksTicking = true;
-        requestAnimationFrame(updateWorksOnScroll);
-      }
-    }, { passive: true });
-
-    // PC版：操作がないときは一定時間ごとに次の項目へ進む（最後まで行ったら最初に戻る）
+    // 操作がないときは一定時間ごとに次の項目へ進む（最後まで行ったら最初に戻る）
     // キーボードで選択中、画面に見えていない間、別タブの間は進めない
     var WORKS_AUTO_MS = 4000;
     var worksShowcase = worksList.closest('.works-showcase');
@@ -393,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var scheduleWorksAuto = function () {
       clearTimeout(worksAutoTimer);
-      if (!worksDesktop.matches || worksReduceMotion.matches) return;
+      if (worksReduceMotion.matches) return;
       worksAutoTimer = setTimeout(function () {
         var focused = !!worksShowcase.querySelector(':focus-visible');
         if (!document.hidden && isWorksInView() && !focused) {
@@ -407,7 +373,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var worksWheelTotal = 0;
     var worksWheelLocked = false;
     worksWindow.addEventListener('wheel', function (e) {
-      if (!worksDesktop.matches) return;
       var direction = e.deltaY > 0 ? 1 : -1;
       var next = worksIndex + direction;
       if (next < 0 || next >= worksItems.length) return;
@@ -428,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function () {
       worksTouchY = e.touches[0].clientY;
     }, { passive: true });
     worksWindow.addEventListener('touchend', function (e) {
-      if (!worksDesktop.matches || worksTouchY === null) return;
+      if (!worksSwipeEnabled.matches || worksTouchY === null) return;
       var moved = worksTouchY - e.changedTouches[0].clientY;
       worksTouchY = null;
       if (Math.abs(moved) > 30) setWorksIndex(worksIndex + (moved > 0 ? 1 : -1), true);
@@ -437,7 +402,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 上下キー
     worksWindow.addEventListener('keydown', function (e) {
-      if (!worksDesktop.matches) return;
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         var next = worksIndex + (e.key === 'ArrowDown' ? 1 : -1);
         if (next < 0 || next >= worksItems.length) return;
@@ -447,23 +411,14 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // クリック：PC版はその項目を選択、スマホ版はその項目が画面の真ん中に来るようにスクロール
+    // クリック（タップ）：その項目を選択
     worksItems.forEach(function (item, i) {
       item.addEventListener('click', function () {
-        if (worksDesktop.matches) {
-          setWorksIndex(i, true);
-          scheduleWorksAuto();
-        } else {
-          item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        setWorksIndex(i, true);
+        scheduleWorksAuto();
       });
     });
 
-    worksDesktop.addEventListener('change', function () {
-      worksIndex = -1;
-      layoutWorks();
-      scheduleWorksAuto();
-    });
     window.addEventListener('resize', layoutWorks);
     window.addEventListener('load', layoutWorks);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutWorks);
