@@ -1293,7 +1293,7 @@ body.lightbox-open { overflow: hidden; }
   flex-direction: column;
   gap: 24px;
 }
-/* 選択中の項目を真ん中に置き、その上下の3つだけを見せる（位置と高さは js/script.js が計算する） */
+/* 選択中の項目を真ん中に置き、その上下の3つだけを見せる（位置と高さは js/script.js が計算する。860px以下は選択中が一番上） */
 .works-list {
   position: relative;
   transition: transform .45s ease;
@@ -1669,6 +1669,11 @@ body.lightbox-open { overflow: hidden; }
 /* =========================================================
    レスポンシブ
    ========================================================= */
+@media (max-width: 1200px) {
+  /* 7項目が改行しないように詰める */
+  .footer-nav { font-size: 20px; gap: 8px 24px; }
+}
+
 @media (max-width: 1100px) {
   .works-visual { flex-basis: 380px; }
   .footer-top { flex-direction: column; align-items: flex-start; gap: 24px; }
@@ -1688,20 +1693,7 @@ body.lightbox-open { overflow: hidden; }
 }
 
 @media (max-width: 860px) {
-  .movie-grid { grid-template-columns: 1fr; }
-  .movie-panel { padding: 40px 24px; }
-
-  .works-showcase { flex-direction: column; align-items: center; gap: 24px; }
-  .works-visual { flex: 0 0 auto; width: 100%; max-width: 460px; }
-  .works-window { flex: 0 0 auto; width: 100%; max-width: 460px; }
-  .works-item, .works-item.is-active { width: 100%; }
-  .works-item::before { display: none; }
-
-  .creators-list { grid-template-columns: repeat(2, minmax(0, max-content)); }
-}
-
-@media (max-width: 700px) {
-  /* スマホ幅では常にハンバーガー表示（フルスクリーンメニューを使用） */
+  /* タブレット以下では常にハンバーガー表示（フルスクリーンメニューを使用） */
   .main-nav { display: none; }
   .nav-toggle {
     opacity: 1; transform: scale(1); pointer-events: auto;
@@ -1711,7 +1703,30 @@ body.lightbox-open { overflow: hidden; }
   .nav-toggle span { width: 26px; }
   .nav-toggle.is-active span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
   .nav-toggle.is-active span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+  .footer-nav { display: none; }
 
+  .movie-grid { grid-template-columns: 1fr; }
+  .movie-panel { padding: 40px 24px; }
+
+  .works-showcase { flex-direction: column; align-items: center; gap: 24px; }
+  .works-visual { flex: 0 0 auto; width: 100%; max-width: 460px; }
+  .works-window { flex: 0 0 auto; width: 100%; max-width: 460px; }
+  .works-item, .works-item.is-active { width: 100%; }
+  /* 位置の移動は js/script.js が滑らせるので、大きさは変化させない */
+  .works-item { transition: background-color .35s ease, color .35s ease, box-shadow .35s ease, opacity .35s ease, visibility .35s ease; }
+  .works-item p { transition: none; }
+  /* 星は選択中の項目の上（画像との間）に出す */
+  .works-item::before {
+    top: -24px;
+    left: 50%;
+    margin: 0 0 0 -12px;
+    font-size: 16px;
+  }
+
+  .creators-list { grid-template-columns: repeat(2, minmax(0, max-content)); }
+}
+
+@media (max-width: 700px) {
   .header-inner { height: 90px; padding: 12px 20px 0; }
   .logo-img { height: 44px; }
   .logo-sub { font-size: 13px; }
@@ -1787,6 +1802,7 @@ body.lightbox-open { overflow: hidden; }
   .section-title.starred::after { width: 56px; }
   /* スマホの文字サイズ：本文14px、補足12px、小見出し16px */
   .section-lead { font-size: 16px; }
+  .music-page .section-lead { font-size: 12px; }
   .section-sublead,
   .member-desc,
   .movie-caption,
@@ -1851,7 +1867,8 @@ body.lightbox-open { overflow: hidden; }
   .works-item.is-active p { font-size: 16px; }
 
   .creators-list { gap: 20px 12px; }
-  .creators-star { flex-basis: 28px; width: 28px; height: 28px; }
+  /* 星の枠を文字の大きさに合わせて、枠の余白のぶん右に寄って見えないようにする */
+  .creators-star { flex-basis: 20px; width: 20px; height: 20px; }
   .creators-star::before { font-size: 20px; }
   .creators-role { font-size: 12px; }
   .creators-name { font-size: 16px; }
@@ -1868,7 +1885,6 @@ body.lightbox-open { overflow: hidden; }
   .footer-top { align-items: center; }
   .footer-logo .logo-img { height: 80px; }
   .footer-links { align-items: center; }
-  .footer-nav { display: none; }
   /* 2列にして、上下の段でリンクの左端をそろえる */
   .footer-sub-links {
     display: grid;
@@ -1895,4 +1911,14 @@ body.lightbox-open { overflow: hidden; }
     height: 873.3px;
   }
   .section-divider { max-width: 100%; }
+}
+
+@media (max-width: 425px) {
+  /* 4つのボタンを1列に収めて、余りは均等に分ける */
+  .music-filter { flex-wrap: nowrap; gap: 8px; }
+  .music-filter button {
+    flex: 1 1 auto;
+    padding: 8px 6px;
+    white-space: nowrap;
+  }
 }

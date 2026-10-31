@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ---- WORKS ----
-  // 画像は固定。リストは選択中の項目を真ん中にして上下の3つだけを見せ、
+  // 画像は固定。リストは選択中の項目を真ん中にして上下の3つだけを見せ（縦並びの画面では選択中を一番上にして下の2つを見せ）、
   // ホイール・上下キー・クリック（タップ）で1つずつ切り替える。操作がなければ自動で進む
   // スワイプはPC幅のみ（スマホはページの縦スクロールとぶつかるため）
   var worksList = document.getElementById('worksList');
@@ -257,6 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var worksPlaceholder = document.querySelector('.works-visual-placeholder');
     var worksLink = document.querySelector('.works-link');
     var worksSwipeEnabled = window.matchMedia('(min-width: 861px)');
+    var worksStacked = window.matchMedia('(max-width: 860px)');
     var worksIndex = -1;
 
     // 切り替えたときに一瞬空白にならないよう、画像を先に読み込んでおく
@@ -267,8 +268,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var markWorksItems = function (index) {
       worksItems.forEach(function (item, i) {
+        // 縦並びの画面では選択中が先頭に来るように順番を回す（最後の次は最初に戻る）
+        var offset = (i - index + worksItems.length) % worksItems.length;
+        item.style.order = worksStacked.matches ? offset : '';
         item.classList.toggle('is-active', i === index);
-        item.classList.toggle('is-near', Math.abs(i - index) === 1);
+        item.classList.toggle('is-near', worksStacked.matches ? offset === 1 || offset === 2 : Math.abs(i - index) === 1);
       });
     };
 
@@ -295,8 +299,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // 指定した項目が選択中のときの、3つ分の高さと、その項目の中心の位置を測る
     var measureWorks = function (index) {
       markWorksItems(index);
-      var first = worksItems[Math.max(index - 1, 0)];
-      var last = worksItems[Math.min(index + 1, worksItems.length - 1)];
+      var first = worksItems[worksStacked.matches ? index : Math.max(index - 1, 0)];
+      var last = worksItems[worksStacked.matches ? (index + 2) % worksItems.length : Math.min(index + 1, worksItems.length - 1)];
       var active = worksItems[index];
       return {
         top: first.offsetTop,
@@ -310,13 +314,45 @@ document.addEventListener('DOMContentLoaded', function () {
       var halfHeight = 0;
       worksItems.forEach(function (item, i) {
         var m = measureWorks(i);
-        halfHeight = Math.max(halfHeight, m.center - m.top, m.bottom - m.center);
+        halfHeight = Math.max(halfHeight, worksStacked.matches ? (m.bottom - m.top) / 2 : Math.max(m.center - m.top, m.bottom - m.center));
       });
       return Math.ceil(halfHeight * 2);
     };
 
+    // 縦並びの画面：順番を入れ替えてから、元の位置から新しい位置へ滑らせる
+    var setStackedWorksIndex = function (index, animate) {
+      var previousTops = worksItems.map(function (item) { return item.getBoundingClientRect().top; });
+      var wasShown = worksItems.map(function (item) {
+        return item.classList.contains('is-active') || item.classList.contains('is-near');
+      });
+      worksIndex = index;
+      markWorksItems(index);
+      worksList.style.transform = '';
+      showWorksImage(worksItems[index]);
+      if (!animate || worksReduceMotion.matches) return;
+      worksItems.forEach(function (item, i) {
+        var moved = previousTops[i] - item.getBoundingClientRect().top;
+        if (moved < 0 && wasShown[i]) {
+          // 一番下へ回った項目は、元の場所で消す
+          item.animate([
+            { transform: 'translateY(' + moved + 'px)', opacity: 1, visibility: 'visible' },
+            { transform: 'translateY(' + (moved - 16) + 'px)', opacity: 0, visibility: 'visible' }
+          ], { duration: 300, easing: 'ease' });
+        } else if (moved !== 0) {
+          item.animate([
+            { transform: 'translateY(' + moved + 'px)' },
+            { transform: 'none' }
+          ], { duration: 450, easing: 'ease' });
+        }
+      });
+    };
+
     var setWorksIndex = function (index, animate) {
       index = Math.max(0, Math.min(index, worksItems.length - 1));
+      if (worksStacked.matches) {
+        setStackedWorksIndex(index, animate);
+        return;
+      }
       var previous = worksIndex;
       // 大きさの変化が終わった後の位置を、アニメーションなしで先に測る
       worksList.classList.add('no-anim');
@@ -340,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
       worksList.classList.add('no-anim');
       worksWindow.style.height = worksWindowHeight() + 'px';
       worksList.classList.remove('no-anim');
-      setWorksIndex(worksIndex < 0 ? 1 : worksIndex, false);
+      setWorksIndex(worksIndex < 0 ? (worksStacked.matches ? 0 : 1) : worksIndex, false);
     };
 
     // 操作がないときは一定時間ごとに次の項目へ進む（最後まで行ったら最初に戻る）
@@ -419,6 +455,10 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
+    worksStacked.addEventListener('change', function () {
+      worksIndex = -1;
+      layoutWorks();
+    });
     window.addEventListener('resize', layoutWorks);
     window.addEventListener('load', layoutWorks);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutWorks);
