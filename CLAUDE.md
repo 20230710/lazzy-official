@@ -13,7 +13,7 @@ images/           画像素材（hero.webp がメインビジュアルの元画�
 svg/              SVG素材置き場（ユーザーが直接ファイルを置くこともある）
 ```
 
-デプロイ先: GitHubリポジトリ [`komoriuta0308/lazzy-official`](https://github.com/komoriuta0308/lazzy-official)（直下にファイルを配置、`lazzy-official-site/`のような入れ子構造にはしない）。
+デプロイ先: GitHubリポジトリ [`20230710/lazzy-official`](https://github.com/20230710/lazzy-official)（直下にファイルを配置、`lazzy-official-site/`のような入れ子構造にはしない）。
 
 ## デザイントークン（css/style.css の `:root`）
 
